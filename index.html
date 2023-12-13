@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AN Chemometrics</title>
+    <style>
+        /* Style the tabs */
+        .tab {
+            display: none;
+        }
+
+        /* Style the button that opens the tab */
+        .tab-button {
+            background-color: #f2f2f2;
+            border: 1px solid #ccc;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        /* Style the active tab button */
+        .active {
+            background-color: #ddd;
+        }
+
+        /* Style the tab content */
+        .tab-content {
+            display: none;
+            padding: 20px;
+            border: 1px solid #ccc;
+        }
+
+        /* Show the active tab content */
+        .active-content {
+            display:block;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Tab buttons -->
+<button class="tab-button" onclick="openTab('H007')">H007</button>
+<button class="tab-button" onclick="openTab('Coating')">Coating</button>
+<button class="tab-button" onclick="openTab('Bulk')">Bulk</button>
+    <py-env>
+        - pandas
+        - scikit-learn
+        - numpy
+    </py-env>
+<!-- Tab contents -->
+<div id="H007" class="tab-content active-content">
+    
+    
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+            integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    
+        <!-- Pyscript Library -->
+        <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
+        <script defer src="https://pyscript.net/alpha/pyscript.js"></script>
+    
+        <title>Chemometrics</title>
+    
+   
+        <!-- Google Fonts CDN -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    
+    <style>
+        .input {
+    
+      color: white;
+      
+      border: 1px solid black;
+      margin: 5px;
+      padding: 5px;
+    
+    
+    }
+    
+        * {
+            margin: 0;
+            padding: 0;
+        }
+    
+        html {
+            scroll-behavior: smooth;
+        }
+    
+        body {
+            font-family: 'Montserrat', sans-serif;
+        }
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 500;
+        }
+        h2 {
+            font-size: 2.1rem;
+            font-weight: 500;
+        }
+
+    </style>
+    
+    <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <a class="navbar-brand mx-auto" href="https://patentimages.storage.googleapis.com/09/05/12/345dfbdae6e60c/US2798301.pdf" target="_blank">AN Dring process </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        
+        </nav>
+<!-- Include Bootstrap JS and Popper.js -->
+       <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+       <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js" integrity="sha384-MCw98/SFnGE8fJT3Y2mEIkpDUMyOOhKKPB9N5sLeF5BkSYW9tjUgyI9DkNc70OfQ" crossorigin="anonymous"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh+Wy6qQ/mAeN49g6PFi72Ho7ftj3Z9xVZ2Kx" crossorigin="anonymous"></script>
+    <!-- Heading Content -->
+        <div
+        style="width: 75%; margin: 20px auto; box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 6px 0 rgba(0, 0, 0, 0.12); border-radius: 4px; text-align: center; padding: 10px;">
+            <h1>Dryer moisture</h1>
+            <p>H007 moisture prediction model .</p>
+        <!--img src="images/homeImg.png" style="margin: 20px auto; width: 90%; height: 450px;" class="img-fluid" alt=""-->
+        </div>
+
+    <!-- Training Parameters -->
+        <div style="width: 75%; margin: 30px auto;" id="trainModel">
+            <h2>Training of Model</h2>
+            <div>
+                <form>
+                    <div class="row ml-1">
+                        <div class="form-check col-lg-6">
+                            <input class="form-check-input" type="radio" name="modelSelection" id="rf_model" value="rf"
+                            checked>
+                            <label class="form-check-label" for="rf_model">
+                            Random Forest
+                            </label>
+                        </div>
+                        <div class="form-check col-lg-6">
+                            <input class="form-check-input" type="radio" name="modelSelection" id="lr_model" value="lr">
+                            <label class="form-check-label" for="lr_model">
+                            Linear Regression
+                            </label>
+                        </div>
+                        <div class="form-check col-lg-6">
+                            <input class="form-check-input" type="radio" name="modelSelection" id="gb_model" value="gb">
+                            <label class="form-check-label" for="gb_model">
+                            Gradient Boosting
+                            </label>
+                        </div>
+                        <div class="form-check col-lg-6">
+                            <input class="form-check-input" type="radio" name="modelSelection" id="svr_model" value="SVR">
+                            <label class="form-check-label" for="svr_model">
+                            Support Vector Regression
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group mt-2">
+                        <label for="test_split">Choose Test Split</label>
+                        <input type="number" class="form-control" id="test_split" aria-describedby="testSplitHelp"
+                        value="0.25">
+                        <small id="testSplitHelp" class="form-text text-muted">Answer between 0 to 1.</small>
+                    </div>
+                    <button class="btn btn-primary mt-2" id="trainModelBtn" type="button">Train Model</button>
+                </form>
+            </div>
+        </div>
+
+    <!-- Heading Bar -->
+        <div style="width: 75%; margin: 10px auto; background-color: #0275d8; border-radius: 3px; text-align: center;">
+            <p style="color: white; font-size: 1.3rem; font-weight: 600;" id="headingText"></p>
+        </div>
+
+    <!-- Training Summary -->
+        <div style="width: 75%; margin: 20px auto; border: 1px solid rgb(211, 211, 211); border-radius: 3px; padding: 10px;">
+            <h2>Training Summary</h2>
+            <div style="display: flex;">
+                <p style="flex-grow: 1;">Selected Model: </p>
+                <p id="selectedModelContentBox">Not available</p>
+            </div>
+            <div style="display: flex;">
+                <p style="flex-grow: 1;">Test Split: </p>
+                <p id="testSplitContentBox">Not available</p>
+            </div>
+            <div style="display: flex;">
+                <p style="flex-grow: 1;">Accuracy Score: </p>
+                <p id="accuracyContentBox">Not available</p>
+            </div>
+            </div>
+
+    <!-- process Parameters -->
+        <div id="testModel" style="width: 75%; margin: 20px auto;">
+            <h2>Process Parameters</h2>
+            <form>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label for="TIC32058" style="text-align: center;">TIC32058</label><br>
+                            <div class="input">
+                                <input type="text" id="TIC32058" name="TIC32058" style="color: black;"><br>    
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label for="FI31460" style="text-align: center;">FI31460</label><br>
+                            <div class="input">
+                                <input type="text" id="FI31460" name="FI31460"style="color: black;"><br>    
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label for="TI32084" style="text-align: center;">TI32084</label><br>
+                            <div class="input">
+                                <input type="text" id="TI32084" name="TI32084"style="color: black;"><br>    
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+                <button class="btn btn-primary disabled" id="submitBtn" type="button" disabled>Submit</button>
+            </form>
+        </div>
+
+    <!-- Output Bar -->
+        <div style="width: 75; margin: 10px auto; background-color: #5cb85c; border-radius: 3px; text-align: center;">
+            <p style="color: white; font-size: 1.3rem; font-weight: 600;" id="resultText"></p>
+        </div>
+
+        <footer style="background-color: #0275d8; bottom: 0; left: 0; text-align: center; color: white; padding: 3px;">
+            <p style="margin: 0;">EHC Chemometrics models</p>
+        </footer>
+
+    <py-script>
+        import pandas as pd
+        import pickle
+        from sklearn.model_selection import train_test_split, GridSearchCV
+        from sklearn.metrics import accuracy_score, mean_squared_error,r2_score
+        from pyodide.http import open_url
+        import numpy as np
+        from sklearn.svm import SVR
+        from sklearn.ensemble import RandomForestRegressor
+        from sklearn.preprocessing import StandardScaler
+        from sklearn.pipeline import Pipeline
+        from sklearn.decomposition import PCA
+        from sklearn.linear_model import (LinearRegression, HuberRegressor, RANSACRegressor, TheilSenRegressor)
+        from sklearn.datasets import make_regression
+        from sklearn.ensemble import GradientBoostingRegressor
+        
+
+
+           # Reading the content of CSV file.
+        data = {'Date ': {0: '9/20/2023', 1: '9/20/2023', 2: '9/21/2023', 3: '9/21/2023', 4: '9/21/2023', 5: '9/21/2023', 6: '9/22/2023', 7: '9/22/2023', 8: '9/22/2023', 9: '9/22/2023', 10: '9/23/2023', 11: '9/23/2023', 12: '9/23/2023', 13: '9/23/2023', 14: '9/24/2023', 15: '9/24/2023', 16: '9/24/2023', 17: '9/24/2023', 18: '9/25/2023', 19: '9/25/2023', 20: '9/25/2023', 21: '9/25/2023', 22: '9/26/2023', 23: '9/26/2023', 24: '9/26/2023', 25: '9/26/2023', 26: '9/27/2023', 27: '9/27/2023', 28: '9/27/2023', 29: '9/27/2023', 30: '9/28/2023', 31: '9/28/2023', 32: '9/28/2023', 33: '9/28/2023', 34: '9/29/2023', 35: '9/29/2023', 36: '9/29/2023', 37: '9/30/2023', 38: '9/30/2023', 39: '9/30/2023', 40: '9/30/2023', 41: '10/1/2023', 42: '10/1/2023', 43: '10/1/2023', 44: '10/1/2023', 45: '10/2/2023', 46: '10/2/2023', 47: '10/2/2023', 48: '10/2/2023', 49: '10/3/2023', 50: '10/3/2023', 51: '10/3/2023', 52: '10/3/2023', 53: '10/4/2023', 54: '10/4/2023', 55: '10/4/2023', 56: '10/4/2023', 57: '10/5/2023'}, 'Time ': {0: '14:00', 1: '20:00', 2: '2:00', 3: '8:00', 4: '14:00', 5: '20:00', 6: '2:00', 7: '8:00', 8: '14:00', 9: '20:00', 10: '2:00', 11: '8:00', 12: '14:00', 13: '20:00', 14: '2:00', 15: '8:00', 16: '14:00', 17: '20:00', 18: '2:00', 19: '8:00', 20: '14:00', 21: '20:00', 22: '2:00', 23: '8:00', 24: '14:00', 25: '20:00', 26: '2:00', 27: '8:00', 28: '14:00', 29: '20:00', 30: '2:00', 31: '8:00', 32: '14:00', 33: '20:00', 34: '2:00', 35: '14:00', 36: '20:00', 37: '2:00', 38: '8:00', 39: '14:00', 40: '20:00', 41: '2:00', 42: '8:00', 43: '14:00', 44: '20:00', 45: '2:00', 46: '8:00', 47: '14:00', 48: '20:00', 49: '2:00', 50: '8:00', 51: '14:00', 52: '20:00', 53: '2:00', 54: '8:00', 55: '14:00', 56: '20:00', 57: '2:00'}, 'SIC32859': {0: 30.0, 1: 30.0, 2: 30.0, 3: 30.0, 4: 30.0, 5: 30.0, 6: 30.0, 7: 30.0, 8: 30.0, 9: 30.0, 10: 30.0, 11: 30.0, 12: 30.0, 13: 30.0, 14: 30.0, 15: 30.0, 16: 30.0, 17: 30.0, 18: 30.0, 19: 29.0, 20: 44.0, 21: 44.0, 22: 44.0, 23: 44.0, 24: 44.0, 25: 44.0, 26: 44.0, 27: 44.0, 28: 44.0, 29: 44.0, 30: 44.0, 31: 44.0, 32: 44.0, 33: 44.0, 34: 44.0, 35: 45.0, 36: 45.0, 37: 45.0, 38: 44.0, 39: 44.0, 40: 45.0, 41: 45.0, 42: 45.0, 43: 31.0, 44: 31.0, 45: 31.0, 46: 31.0, 47: 31.0, 48: 31.0, 49: 31.0, 50: 31.0, 51: 31.0, 52: 31.0, 53: 31.0, 54: 30.0, 55: 30.0, 56: 30.0, 57: 30.0}, 'PI32272': {0: 1.6, 1: 1.6, 2: 1.65, 3: 1.65, 4: 1.7, 5: 1.71, 6: 1.68, 7: 1.7, 8: 1.73, 9: 1.71, 10: 1.69, 11: 1.59, 12: 1.64, 13: 1.62, 14: 1.63, 15: 1.65, 16: 1.71, 17: 1.65, 18: 1.72, 19: 1.6, 20: 3.12, 21: 3.2, 22: 3.2, 23: 3.36, 24: 3.36, 25: 3.3, 26: 3.32, 27: 3.33, 28: 3.32, 29: 3.2, 30: 3.18, 31: 3.18, 32: 3.21, 33: 3.2, 34: 3.19, 35: 3.33, 36: 3.33, 37: 3.32, 38: 3.3, 39: 3.3, 40: 3.3, 41: 3.35, 42: 3.3, 43: 1.72, 44: 1.7, 45: 1.71, 46: 1.71, 47: 1.72, 48: 1.71, 49: 1.71, 50: 1.73, 51: 1.73, 52: 1.73, 53: 1.74, 54: 1.62, 55: 1.64, 56: 1.63, 57: 1.64}, 'FI32446': {0: 32.0, 1: 32.0, 2: 32.0, 3: 32.0, 4: 31.5, 5: 31.2, 6: 31.1, 7: 30.77, 8: 31.04, 9: 30.8, 10: 31.0, 11: 30.71, 12: 30.76, 13: 30.7, 14: 30.6, 15: 30.21, 16: 30.5, 17: 30.5, 18: 30.85, 19: 30.3, 20: 37.0, 21: 37.0, 22: 37.0, 23: 37.0, 24: 37.0, 25: 37.0, 26: 37.19, 27: 38.0, 28: 37.71, 29: 40.15, 30: 40.14, 31: 40.25, 32: 39.6, 33: 39.55, 34: 39.2, 35: 40.0, 36: 39.0, 37: 38.8, 38: 38.9, 39: 39.2, 40: 40.0, 41: 40.0, 42: 40.1, 43: 35.4, 44: 35.7, 45: 35.7, 46: 35.8, 47: 35.7, 48: 36.05, 49: 36.28, 50: 36.07, 51: 36.36, 52: 36.28, 53: 36.08, 54: 34.6, 55: 34.5, 56: 34.73, 57: 34.45}, 'FI32446-TH': {0: 40.6, 1: 40.6, 2: 40.6, 3: 40.6, 4: 40.6, 5: 40.6, 6: 40.6, 7: 40.6, 8: 40.6, 9: 40.6, 10: 40.6, 11: 40.6, 12: 40.6, 13: 40.6, 14: 40.6, 15: 40.6, 16: 40.6, 17: 40.6, 18: 40.67, 19: 39.65, 20: 54.55, 21: 54.55, 22: 54.55, 23: 54.55, 24: 54.36, 25: 54.55, 26: 54.55, 27: 54.55, 28: 54.55, 29: 54.55, 30: 54.55, 31: 54.55, 32: 54.55, 33: 54.55, 34: 54.55, 35: 55.5, 36: 55.5, 37: 55.5, 38: 54.55, 39: 54.55, 40: 55.5, 41: 55.5, 42: 55.5, 43: 41.7, 44: 41.7, 45: 41.7, 46: 41.7, 47: 41.7, 48: 41.7, 49: 41.7, 50: 41.7, 51: 41.7, 52: 41.7, 53: 41.7, 54: 40.7, 55: 40.75, 56: 40.75, 57: 40.75}, 'FI31460': {0: 26.1, 1: 25.9, 2: 26.0, 3: 25.9, 4: 26.0, 5: 25.8, 6: 25.8, 7: 25.74, 8: 26.1, 9: 26.1, 10: 26.1, 11: 26.1, 12: 26.2, 13: 26.0, 14: 26.0, 15: 25.95, 16: 25.93, 17: 26.0, 18: 26.08, 19: 26.0, 20: 35.7, 21: 35.5, 22: 35.6, 23: 35.66, 24: 35.66, 25: 35.8, 26: 35.91, 27: 35.78, 28: 35.89, 29: 35.52, 30: 35.6, 31: 35.5, 32: 35.3, 33: 35.7, 34: 35.6, 35: 35.0, 36: 35.6, 37: 35.65, 38: 35.6, 39: 35.5, 40: 35.6, 41: 35.6, 42: 35.5, 43: 26.1, 44: 26.2, 45: 26.25, 46: 26.24, 47: 26.03, 48: 26.01, 49: 25.95, 50: 26.01, 51: 26.07, 52: 25.99, 53: 25.88, 54: 26.3, 55: 26.0, 56: 26.04, 57: 26.07}, 'FI32401': {0: 102.0, 1: 104.0, 2: 104.0, 3: 104.0, 4: 102.0, 5: 104.0, 6: 104.0, 7: 103.0, 8: 103.0, 9: 103.0, 10: 103.0, 11: 102.0, 12: 103.0, 13: 104.0, 14: 104.0, 15: 103.0, 16: 103.0, 17: 104.0, 18: 102.0, 19: 102.0, 20: 130.0, 21: 130.0, 22: 130.0, 23: 131.0, 24: 131.0, 25: 131.0, 26: 132.0, 27: 133.0, 28: 130.0, 29: 130.0, 30: 130.0, 31: 131.0, 32: 131.0, 33: 131.0, 34: 131.0, 35: 131.0, 36: 131.0, 37: 131.0, 38: 130.0, 39: 132.0, 40: 131.0, 41: 131.0, 42: 130.0, 43: 100.0, 44: 100.0, 45: 101.0, 46: 103.0, 47: 103.0, 48: 102.0, 49: 103.0, 50: 105.0, 51: 105.0, 52: 104.0, 53: 104.0, 54: 104.0, 55: 104.0, 56: 103.0, 57: 103.0}, 'TIC32086': {0: 92.3, 1: 91.4, 2: 92.4, 3: 92.0, 4: 92.0, 5: 91.6, 6: 92.4, 7: 91.8, 8: 92.0, 9: 91.5, 10: 92.3, 11: 92.1, 12: 92.1, 13: 92.0, 14: 91.7, 15: 91.4, 16: 92.5, 17: 92.4, 18: 92.4, 19: 91.7, 20: 92.0, 21: 92.0, 22: 92.0, 23: 91.4, 24: 91.4, 25: 91.5, 26: 90.6, 27: 91.5, 28: 91.0, 29: 91.0, 30: 91.0, 31: 91.0, 32: 91.0, 33: 90.0, 34: 90.0, 35: 90.0, 36: 90.0, 37: 90.4, 38: 90.0, 39: 90.0, 40: 90.0, 41: 91.0, 42: 91.0, 43: 91.0, 44: 91.0, 45: 91.0, 46: 91.0, 47: 91.0, 48: 90.6, 49: 91.1, 50: 91.0, 51: 91.0, 52: 91.2, 53: 90.7, 54: 90.7, 55: 91.0, 56: 90.8, 57: 90.8}, 'HIC32603': {0: 50.0, 1: 47.0, 2: 45.0, 3: 45.0, 4: 53.0, 5: 47.0, 6: 46.0, 7: 42.0, 8: 60.0, 9: 50.0, 10: 45.0, 11: 45.0, 12: 57.0, 13: 52.0, 14: 46.0, 15: 43.0, 16: 55.0, 17: 45.0, 18: 42.0, 19: 44.0, 20: 82.0, 21: 78.0, 22: 70.0, 23: 71.0, 24: 83.0, 25: 83.0, 26: 72.0, 27: 78.0, 28: 75.0, 29: 76.0, 30: 72.0, 31: 63.0, 32: 82.0, 33: 77.0, 34: 76.0, 35: 80.0, 36: 81.0, 37: 81.0, 38: 73.0, 39: 80.0, 40: 80.0, 41: 78.0, 42: 69.0, 43: 56.0, 44: 55.0, 45: 53.0, 46: 43.0, 47: 46.5, 48: 45.0, 49: 45.0, 50: 40.0, 51: 40.0, 52: 43.0, 53: 41.0, 54: 38.0, 55: 47.0, 56: 47.0, 57: 46.0}, 'SIC32808- 32K001A': {0: 56.0, 1: 53.0, 2: 51.0, 3: 51.0, 4: 58.0, 5: 53.0, 6: 52.0, 7: 48.0, 8: 65.0, 9: 56.0, 10: 51.0, 11: 51.0, 12: 62.0, 13: 57.0, 14: 52.0, 15: 49.0, 16: 60.0, 17: 51.0, 18: 48.0, 19: 44.0, 20: 85.0, 21: 82.0, 22: 74.0, 23: 75.0, 24: 86.0, 25: 86.0, 26: 76.0, 27: 80.0, 28: 77.0, 29: 80.0, 30: 76.0, 31: 67.0, 32: 85.0, 33: 80.0, 34: 79.0, 35: 83.0, 36: 84.0, 37: 84.0, 38: 76.0, 39: 83.0, 40: 83.0, 41: 81.0, 42: 72.0, 43: 59.0, 44: 60.0, 45: 58.0, 46: 49.0, 47: 53.0, 48: 51.0, 49: 51.0, 50: 47.0, 51: 47.0, 52: 49.0, 53: 47.0, 54: 38.0, 55: 53.0, 56: 53.0, 57: 52.0}, 'TI32015': {0: 30.2, 1: 28.2, 2: 28.0, 3: 30.0, 4: 32.0, 5: 29.3, 6: 28.9, 7: 27.6, 8: 31.4, 9: 29.1, 10: 28.5, 11: 27.9, 12: 31.8, 13: 29.0, 14: 28.0, 15: 27.0, 16: 30.7, 17: 27.7, 18: 25.2, 19: 25.2, 20: 31.4, 21: 30.0, 22: 27.8, 23: 29.0, 24: 32.8, 25: 31.5, 26: 29.2, 27: 29.4, 28: 31.0, 29: 28.8, 30: 26.8, 31: 25.8, 32: 32.3, 33: 30.0, 34: 30.4, 35: 33.0, 36: 31.1, 37: 30.0, 38: 29.1, 39: 32.8, 40: 33.0, 41: 30.2, 42: 29.7, 43: 32.0, 44: 29.2, 45: 29.3, 46: 27.1, 47: 28.3, 48: 27.8, 49: 27.2, 50: 27.9, 51: 27.7, 52: 27.0, 53: 26.4, 54: 27.3, 55: 28.7, 56: 28.0, 57: 27.2}, 'AYI31749': {0: 95.45, 1: 95.49, 2: 95.5, 3: 95.46, 4: 95.45, 5: 95.46, 6: 95.46, 7: 95.45, 8: 95.45, 9: 95.47, 10: 95.47, 11: 95.51, 12: 95.49, 13: 95.5, 14: 95.3, 15: 95.5, 16: 95.48, 17: 95.5, 18: 95.52, 19: 95.49, 20: 95.4, 21: 94.4, 22: 94.4, 23: 95.45, 24: 95.45, 25: 95.41, 26: 95.42, 27: 95.42, 28: 95.4, 29: 95.44, 30: 95.42, 31: 95.4, 32: 95.4, 33: 95.4, 34: 95.42, 35: 96.4, 36: 96.32, 37: 96.4, 38: 96.45, 39: 97.5, 40: 97.5, 41: 97.66, 42: 97.73, 43: 97.83, 44: 98.0, 45: 98.28, 46: 98.3, 47: 98.5, 48: 98.59, 49: 98.58, 50: 98.81, 51: 98.89, 52: 99.08, 53: 99.18, 54: 99.62, 55: 99.8, 56: 95.68, 57: 100.34}, 'AN_LOAD': {0: 77.3, 1: 77.0, 2: 79.5, 3: 78.0, 4: 79.0, 5: 76.5, 6: 78.8, 7: 77.6, 8: 78.4, 9: 79.0, 10: 77.0, 11: 77.3, 12: 78.2, 13: 78.0, 14: 76.0, 15: 78.5, 16: 77.3, 17: 78.0, 18: 78.3, 19: 78.0, 20: 107.0, 21: 107.0, 22: 107.0, 23: 110.0, 24: 109.0, 25: 110.0, 26: 110.9, 27: 110.0, 28: 110.0, 29: 108.0, 30: 109.0, 31: 108.0, 32: 108.0, 33: 109.0, 34: 109.0, 35: 105.0, 36: 109.0, 37: 109.0, 38: 109.0, 39: 108.0, 40: 105.0, 41: 106.0, 42: 108.0, 43: 76.1, 44: 78.7, 45: 76.0, 46: 77.0, 47: 78.0, 48: 77.2, 49: 76.7, 50: 75.0, 51: 78.0, 52: 77.7, 53: 76.1, 54: 76.0, 55: 78.0, 56: 77.3, 57: 77.3}, 'TI32084': {0: 89.2, 1: 89.2, 2: 88.9, 3: 88.2, 4: 88.8, 5: 89.5, 6: 88.7, 7: 88.0, 8: 89.5, 9: 89.5, 10: 88.9, 11: 88.1, 12: 89.3, 13: 89.4, 14: 89.1, 15: 87.9, 16: 89.8, 17: 89.8, 18: 89.0, 19: 87.7, 20: 90.4, 21: 90.0, 22: 89.7, 23: 88.2, 24: 88.2, 25: 89.7, 26: 88.7, 27: 88.0, 28: 89.0, 29: 89.4, 30: 89.0, 31: 87.9, 32: 89.8, 33: 89.0, 34: 88.0, 35: 88.7, 36: 88.9, 37: 88.3, 38: 88.9, 39: 88.7, 40: 88.7, 41: 88.6, 42: 88.7, 43: 89.8, 44: 88.8, 45: 88.1, 46: 87.8, 47: 88.1, 48: 87.9, 49: 87.6, 50: 87.8, 51: 88.0, 52: 88.2, 53: 87.8, 54: 87.2, 55: 88.5, 56: 88.5, 57: 88.0}, 'TI32087': {0: 26.8, 1: 26.8, 2: 26.1, 3: 26.0, 4: 25.8, 5: 25.7, 6: 25.0, 7: 24.7, 8: 26.7, 9: 25.7, 10: 24.8, 11: 24.5, 12: 26.6, 13: 26.6, 14: 24.9, 15: 24.2, 16: 26.8, 17: 26.3, 18: 25.7, 19: 24.2, 20: 29.2, 21: 29.2, 22: 29.0, 23: 28.2, 24: 29.5, 25: 29.7, 26: 28.6, 27: 29.8, 28: 29.9, 29: 25.9, 30: 27.4, 31: 26.8, 32: 28.0, 33: 27.8, 34: 28.3, 35: 27.0, 36: 28.0, 37: 27.3, 38: 27.1, 39: 28.2, 40: 28.0, 41: 27.5, 42: 28.7, 43: 23.4, 44: 24.6, 45: 24.4, 46: 24.5, 47: 24.8, 48: 24.7, 49: 24.6, 50: 24.2, 51: 24.1, 52: 24.2, 53: 24.7, 54: 24.4, 55: 25.9, 56: 26.5, 57: 25.9}, 'TI32046': {0: 55.3, 1: 55.1, 2: 54.9, 3: 54.0, 4: 55.3, 5: 55.8, 6: 54.5, 7: 54.5, 8: 54.6, 9: 55.4, 10: 54.6, 11: 54.2, 12: 55.8, 13: 55.1, 14: 54.9, 15: 54.6, 16: 54.7, 17: 56.2, 18: 54.7, 19: 53.5, 20: 60.4, 21: 59.0, 22: 58.0, 23: 58.8, 24: 58.8, 25: 58.9, 26: 58.3, 27: 58.2, 28: 58.7, 29: 56.8, 30: 56.8, 31: 56.9, 32: 59.0, 33: 58.2, 34: 57.5, 35: 61.0, 36: 59.1, 37: 57.6, 38: 52.7, 39: 58.5, 40: 61.0, 41: 58.1, 42: 58.7, 43: 55.6, 44: 54.4, 45: 54.5, 46: 55.3, 47: 55.9, 48: 56.1, 49: 55.2, 50: 55.3, 51: 56.6, 52: 55.9, 53: 55.6, 54: 57.3, 55: 56.4, 56: 55.7, 57: 55.0}, 'PI32243': {0: -1.3, 1: -1.5, 2: -1.4, 3: -1.4, 4: -1.5, 5: -1.5, 6: -1.5, 7: -1.6, 8: -1.6, 9: -1.6, 10: -1.5, 11: -1.7, 12: -1.6, 13: -1.7, 14: -1.5, 15: -1.6, 16: -1.7, 17: -1.5, 18: -1.5, 19: -1.6, 20: -1.3, 21: -1.3, 22: -1.3, 23: -1.2, 24: -1.2, 25: -1.4, 26: -1.3, 27: -1.2, 28: -1.4, 29: -1.4, 30: -1.3, 31: -1.2, 32: -1.3, 33: -1.2, 34: -1.2, 35: -1.2, 36: -1.4, 37: -1.2, 38: -1.2, 39: -1.3, 40: -1.2, 41: -1.2, 42: -1.1, 43: -1.2, 44: -1.5, 45: -1.5, 46: -1.5, 47: -1.4, 48: -1.5, 49: -1.5, 50: -1.5, 51: -1.4, 52: -1.4, 53: -1.5, 54: -1.2, 55: -1.4, 56: -1.4, 57: -1.6}, 'MC_S004': {0: 0.05,  1: 0.05, 2: 0.07, 3: 0.06, 4: 0.06, 5: 0.06, 6: 0.07, 7: 0.08, 8: 0.07, 9: 0.06, 10: 0.06, 11: 0.06, 12: 0.05, 13: 0.06, 14: 0.05, 15: 0.07, 16: 0.04, 17: 0.06, 18: 0.03, 19: 0.04, 20: 0.04, 21: 0.04, 22: 0.03, 23: 0.06, 24: 0.04, 25: 0.05, 26: 0.05, 27: 0.06, 28: 0.07, 29: 0.04, 30: 0.05, 31: 0.04, 32: 0.05, 33: 0.04, 34: 0.06, 35: 0.04, 36: 0.09, 37: 0.05, 38: 0.04, 39: 0.06, 40: 0.04, 41: 0.05, 42: 0.05, 43: 0.06, 44: 0.05, 45: 0.05, 46: 0.06, 47: 0.06, 48: 0.06, 49: 0.05, 50: 0.06, 51: 0.06, 52: 0.05, 53: 0.04, 54: 0.05, 55: 0.05, 56: 0.07, 57: 0.06}, 'MC_H007': {0: 0.06, 1: 0.05, 2: 0.07, 3: 0.09, 4: 0.07, 5: 0.06, 6: 0.06, 7: 0.11, 8: 0.05, 9: 0.07, 10: 0.07, 11: 0.07, 12: 0.06, 13: 0.06, 14: 0.07, 15: 0.09, 16: 0.04, 17: 0.06, 18: 0.04, 19: 0.04, 20: 0.05, 21: 0.05, 22: 0.05, 23: 0.06, 24: 0.06, 25: 0.05, 26: 0.06, 27: 0.06, 28: 0.07, 29: 0.06, 30: 0.04, 31: 0.05, 32: 0.07, 33: 0.04, 34: 0.07, 35: 0.04, 36: 0.06, 37: 0.05, 38: 0.05, 39: 0.07, 40: 0.06, 41: 0.05, 42: 0.06, 43: 0.08, 44: 0.07, 45: 0.05, 46: 0.06, 47: 0.06, 48: 0.07, 49: 0.05, 50: 0.06, 51: 0.06, 52: 0.06, 53: 0.06, 54: 0.06, 55: 0.05, 56: 0.05, 57: 0.06}, 'MC_H021': {0: 0.3, 1: 0.3, 2: 0.44, 3: 0.62, 4: 0.37, 5: 0.24, 6: 0.51, 7: 0.88, 8: 0.37, 9: 0.36, 10: 0.54, 11: 0.31, 12: 0.44, 13: 0.56, 14: 0.39, 15: 0.34, 16: 0.26, 17: 0.3, 18: 0.25, 19: 0.47, 20: 0.52, 21: 0.68, 22: 0.71, 23: 0.66, 24: 0.57, 25: 0.53, 26: 0.61, 27: 0.55, 28: 0.7, 29: 0.69, 30: 0.6, 31: 0.67, 32: 0.44, 33: 0.6, 34: 0.63, 35: 1.1, 36: 0.57, 37: 0.57, 38: 0.86, 39: 0.54, 40: 0.66, 41: 0.77, 42: 0.86, 43: 0.45, 44: 0.64, 45: 0.65, 46: 0.53, 47: 0.45, 48: 0.41, 49: 0.57, 50: 0.5, 51: 0.3, 52: 0.47, 53: 0.66, 54: 0.67, 55: 0.44, 56: 0.52, 57: 0.53}, 'MC_H003': {0: 3.05, 1: 3.11, 2: 3.27, 3: 3.28, 4: 3.44, 5: 3.34, 6: 3.21, 7: 3.29, 8: 3.2, 9: 3.06, 10: 3.01, 11: 2.92, 12: 3.0, 13: 3.12, 14: 2.98, 15: 2.9, 16: 2.9, 17: 3.01, 18: 3.01, 19: 2.9, 20: 3.03, 21: 2.25, 22: 3.01, 23: 3.12, 24: 3.07, 25: 2.91, 26: 3.0, 27: 3.06, 28: 3.01, 29: 2.7, 30: 2.7, 31: 3.11, 32: 3.18, 33: 2.94, 34: 3.1, 35: 3.21, 36: 2.75, 37: 2.62, 38: 2.94, 39: 2.98, 40: 2.95, 41: 3.1, 42: 3.11, 43: 3.13, 44: 3.11, 45: 2.93, 46: 3.11, 47: 2.96, 48: 2.97, 49: 3.14, 50: 3.13, 51: 3.14, 52: 2.99, 53: 3.02, 54: 3.02, 55: 2.97, 56: 2.8, 57: 2.87}, 'between': {0: 95.5, 1: 94.9, 2: 95.2, 3: 94.1, 4: 94.8, 5: 94.2, 6: 94.6, 7: 94.5, 8: 94.5, 9: 94.4, 10: 94.3, 11: 94.4, 12: 94.4, 13: 93.2, 14: 94.4, 15: 96.9, 16: 93.8, 17: 95.2, 18: 95.2, 19: 93.3, 20: 93.2, 21: 94.2, 22: 94.2, 23: 92.7, 24: 93.0, 25: 94.7, 26: 94.7, 27: 93.3, 28: 93.5, 29: 95.0, 30: 94.4, 31: 92.6, 32: 93.1, 33: 93.8, 34: 92.9, 35: 90.5, 36: 94.2, 37: 94.4, 38: 93.5, 39: 95.1, 40: 94.4, 41: 94.4, 42: 92.8, 43: 93.8, 44: 95.2, 45: 94.8, 46: 94.1, 47: 94.1, 48: 95.5, 49: 94.2, 50: 93.4, 51: 94.5, 52: 94.7, 53: 94.1, 54: 93.5, 55: 94.0, 56: 94.5, 57: 94.7}, 'Under': {0: 0.5, 1: 0.5, 2: 0.5, 3: 0.3, 4: 0.5, 5: 0.4, 6: 0.4, 7: 0.5, 8: 0.5, 9: 0.8, 10: 0.7, 11: 0.3, 12: 0.4, 13: 0.7, 14: 0.4, 15: 0.2, 16: 0.3, 17: 0.5, 18: 0.5, 19: 0.4, 20: 0.4, 21: 0.4, 22: 0.4, 23: 0.4, 24: 0.4, 25: 0.4, 26: 0.5, 27: 0.5, 28: 0.4, 29: 0.4, 30: 0.4, 31: 0.5, 32: 0.7, 33: 0.7, 34: 0.4, 35: 0.8, 36: 0.5, 37: 0.5, 38: 0.5, 39: 0.9, 40: 0.8, 41: 0.8, 42: 0.6, 43: 0.6, 44: 0.7, 45: 0.6, 46: 0.5, 47: 0.8, 48: 0.8, 49: 0.6, 50: 0.5, 51: 0.9, 52: 0.7, 53: 0.6, 54: 0.4, 55: 0.7, 56: 0.7, 57: 0.5}, 'Bulk': {0: 722.0, 1: 720.0, 2: 724.0, 3: 728.0, 4: 726.0, 5: 724.0, 6: 720.0, 7: 716.0, 8: 720.0, 9: 722.0, 10: 726.0, 11: 720.0, 12: 720.0, 13: 724.0, 14: 718.0, 15: 718.0, 16: 724.0, 17: 723.0, 18: 724.0, 19: 725.0, 20: 728.0, 21: 730.0, 22: 738.0, 23: 732.0, 24: 730.0, 25: 732.0, 26: 729.0, 27: 729.0, 28: 730.0, 29: 725.0, 30: 727.0, 31: 728.0, 32: 720.0, 33: 724.0, 34: 724.0, 35: 718.0, 36: 724.0, 37: 724.0, 38: 730.0, 39: 716.0, 40: 718.0, 41: 722.0, 42: 722.0, 43: 696.0, 44: 718.0, 45: 722.0, 46: 718.0, 47: 720.0, 48: 718.0, 49: 714.0, 50: 712.0, 51: 714.0, 52: 711.0, 53: 712.0, 54: 720.0, 55: 716.0, 56: 714.0, 57: 722.0}, 'FOR': {0: 10.9, 1: 10.6, 2: 10.4, 3: 10.5, 4: 10.3, 5: 10.6, 6: 10.3, 7: 10.4, 8: 10.6, 9: 10.5, 10: 10.6, 11: 10.7, 12: 10.7, 13: 10.8, 14: 10.3, 15: 10.4, 16: 10.6, 17: 10.5, 18: 10.6, 19: 10.8, 20: 10.6, 21: 10.7, 22: 10.1, 23: 10.5, 24: 10.5, 25: 10.3, 26: 10.5, 27: 10.7, 28: 10.8, 29: 10.5, 30: 10.4, 31: 10.7, 32: 11.0, 33: 10.9, 34: 10.4, 35: 10.5, 36: 10.8, 37: 10.4, 38: 10.6, 39: 11.0, 40: 10.7, 41: 10.6, 42: 11.0, 43: 11.0, 44: 10.8, 45: 10.4, 46: 10.6, 47: 11.1, 48: 10.9, 49: 10.6, 50: 10.8, 51: 11.0, 52: 10.5, 53: 10.8, 54: 10.6, 55: 11.0, 56: 10.9, 57: 10.6}, 'Hardness': {0: 0.5, 1: 0.5, 2: 0.5, 3: 0.5, 4: 0.4, 5: 0.5, 6: 0.5, 7: 0.5, 8: 0.6, 9: 0.5, 10: 0.5, 11: 0.5, 12: 0.7, 13: 0.5, 14: 0.6, 15: 0.5, 16: 0.6, 17: 0.6, 18: 0.7, 19: 0.7, 20: 0.6, 21: 0.6, 22: 0.7, 23: 0.5, 24: 0.5, 25: 0.6, 26: 0.6, 27: 0.5, 28: 0.6, 29: 0.8, 30: 0.7, 31: 0.7, 32: 0.5, 33: 0.6, 34: 0.5, 35: 0.5, 36: 0.5, 37: 0.5, 38: 0.6, 39: 0.6, 40: 0.5, 41: 0.5, 42: 0.5, 43: 0.5, 44: 0.5, 45: 0.5, 46: 0.5, 47: 0.4, 48: 0.5, 49: 0.5, 50: 0.5, 51: 0.5, 52: 0.5, 53: 0.6, 54: 0.5, 55: 0.5, 56: 0.5, 57: 0.6}, 'Coating ': {0: 1110.0, 1: 1090.0, 2: 1045.0, 3: 1015.0, 4: 950.0, 5: 1060.0, 6: 1000.0, 7: 1090.0, 8: 1020.0, 9: 1060.0, 10: 1090.0, 11: 1090.0, 12: 1060.0, 13: 1070.0, 14: 1055.0, 15: 1205.0, 16: 1200.0, 17: 1215.0, 18: 1300.0, 19: 1115.0, 20: 1180.0, 21: 1135.0, 22: 1135.0, 23: 950.0, 24: 1000.0, 25: 1055.0, 26: 1165.0, 27: 1000.0, 28: 975.0, 29: 975.0, 30: 1160.0, 31: 1000.0, 32: 1095.0, 33: 955.0, 34: 990.0, 35: 1015.0, 36: 950.0, 37: 920.0, 38: 1000.0, 39: 1000.0, 40: 1020.0, 41: 1035.0, 42: 1160.0, 43: 1125.0, 44: 1080.0, 45: 1145.0, 46: 1085.0, 47: 1030.0, 48: 1135.0, 49: 1145.0, 50: 1100.0, 51: 1200.0, 52: 1100.0, 53: 1170.0, 54: 1280.0, 55: 1075.0, 56: 1130.0, 57: 1140.0}}
+        data= pd.DataFrame.from_dict(data, orient='index').T
+        <!--pyscript.write("headingText", "Pre-Processing the Dataset...") # This is used to send messages to the HTML DOM.--->
+
+        def model_selection():
+            selectedModel = document.querySelector('input[name="modelSelection"]:checked').value;
+            if selectedModel == "rf":
+                document.getElementById("selectedModelContentBox").innerText = "Random Forest Regressor";
+                return RandomForestRegressor(n_estimators = 100, random_state = 0)
+            elif selectedModel == "lr":
+                document.getElementById("selectedModelContentBox").innerText = "Linear Regression";
+                return LinearRegression()
+            elif selectedModel == "gb":
+                document.getElementById("selectedModelContentBox").innerText = "Gradient Boosting Regressor";
+                return GradientBoostingRegressor(n_estimators=100, learning_rate=1.0, max_depth=1, random_state=0)
+            else:
+                document.getElementById("selectedModelContentBox").innerText = "Support Vector Regression";
+                return SVR(kernel = 'linear')
+
+        def classifier(model, X_train, X_test, y_train, y_test):
+            clf = model
+            clf.fit(X_train, y_train)
+            y_pred = clf.predict(X_test)
+            y_score = clf.fit(X_train, y_train)
+            y_test_reshaped = y_test.values.reshape(-1, 1) if isinstance(y_test, pd.Series) else y_test.reshape(-1, 1)
+            y_pred_reshaped = y_pred.reshape(-1, 1)
+            acc_score = r2_score(y_test_reshaped, y_pred_reshaped)
+            return acc_score, model
+
+
+
+        def trainModel(e=None):
+            global trained_model
+             
+            processed_data = data
+        
+            # Take the Test Split as an input by the user
+            test_split = float(document.getElementById("test_split").value)
+            # If the test split is greater than 1 or less than 0 then we will throw an error.
+            if test_split > 1 or test_split < 0:
+                pyscript.write("headingText", "Choose Test Split between 0 to 1")
+                return
+            document.getElementById("testSplitContentBox").innerText = test_split;
+        
+            x= data.iloc[:, [10,4,6]]
+            y = data['MC_H007']
+        
+              # Splitting the Dataset into training and testing.
+            X_train, X_test, y_train, y_test = train_test_split(x, y, test_size=test_split, random_state=42)
+              # Below function can return the regression model choosen by the user
+            model = model_selection()
+            pyscript.write("headingText", "Model Training Started...")
+            acc_score, trained_model = classifier(model, X_train, X_test, y_train, y_test)
+            pyscript.write("headingText", "Model Training Completed.")
+        
+                # Writing the value of accuracy to the DOM
+            document.getElementById("accuracyContentBox").innerText = f"{round(acc_score*100, 2)}%";
+            
+        
+                # Below code is to enable the Model Training Button when the Model is successfully trained.
+            document.getElementById("submitBtn").classList.remove("disabled");
+            document.getElementById("submitBtn").disabled = False;
+            document.getElementById("trainModelBtn").classList.remove("disabled");
+            document.getElementById("trainModelBtn").disabled = False;
+        
+            if e:
+                e.preventDefault()
+            return False
+
+        def testModel(e=None):
+            TIC32058 = float(document.getElementById("TIC32058").value)
+            FI31460 = float(document.getElementById("FI31460").value)
+            TI32084 = float(document.getElementById("TI32084").value)
+
+        
+            arr = np.array([TIC32058, FI31460, TI32084]).astype('float32')
+            arr = np.expand_dims(arr, axis=0)
+            result = trained_model.predict(arr)
+            condition = result
+        
+            pyscript.write("resultText", f"Predicted Value of H007: {condition}")
+        
+            if e:
+                e.preventDefault()
+            return False
+
+        document.getElementById("submitBtn").onclick = testModel
+        document.getElementById("trainModelBtn").onclick = trainModel
+
+        
+
+        
+    </py-script>
+
+
+
+
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    
+</div>
+<div id="Coating" class="tab-content">
+    
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+            integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    
+        <!-- Pyscript Library -->
+        <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
+        <script defer src="https://pyscript.net/alpha/pyscript.js"></script>
+    
+        <title>Chemometrics</title>
+    
+
+    
+        <!-- Google Fonts CDN -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet"></head>
+    <style>
+        .input {
+    
+      color: white;
+      
+      border: 1px solid black;
+      margin: 5px;
+      padding: 5px;
+    
+    
+    }
+    
+        * {
+            margin: 0;
+            padding: 0;
+        }
+    
+        html {
+            scroll-behavior: smooth;
+        }
+    
+        body {
+            font-family: 'Montserrat', sans-serif;
+        }
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 500;
+        }
+        h2 {
+            font-size: 2.1rem;
+            font-weight: 500;
+        }
+
+    </style>
+    
+    <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <a class="navbar-brand mx-auto" href="https://patentimages.storage.googleapis.com/09/05/12/345dfbdae6e60c/US2798301.pdf" target="_blank">Coating process </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        
+        </nav>
+<!-- Include Bootstrap JS and Popper.js -->
+       <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+       <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js" integrity="sha384-MCw98/SFnGE8fJT3Y2mEIkpDUMyOOhKKPB9N5sLeF5BkSYW9tjUgyI9DkNc70OfQ" crossorigin="anonymous"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh+Wy6qQ/mAeN49g6PFi72Ho7ftj3Z9xVZ2Kx" crossorigin="anonymous"></script>
+    <!-- Heading Content -->
+        <div
+        style="width: 75%; margin: 20px auto; box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 6px 0 rgba(0, 0, 0, 0.12); border-radius: 4px; text-align: center; padding: 10px;">
+            <h1>Coating</h1>
+            <p>Coating prediction model .</p>
+        <!--img src="images/homeImg.png" style="margin: 20px auto; width: 90%; height: 450px;" class="img-fluid" alt=""-->
+        </div>
+
+    <!-- Training Parameters -->
+        <div style="width: 75%; margin: 30px auto;" id="trainModel1">
+            <h2>Training of Model</h2>
+            <div>
+                <form>
+                    <div class="row ml-1">
+                        <div class="form-check col-lg-6">
+                            <input class="form-check-input" type="radio" name="modelSelection1" id="rf_model1" value="rf1"
+                            checked>
+                            <label class="form-check-label" for="rf_model1">
+                            Random Forest
+                            </label>
+                        </div>
+                        <div class="form-check col-lg-6">
+                            <input class="form-check-input" type="radio" name="modelSelection1" id="lr_model1" value="lr1">
+                            <label class="form-check-label" for="lr_model1">
+                            Linear Regression
+                            </label>
+                        </div>
+                        <div class="form-check col-lg-6">
+                            <input class="form-check-input" type="radio" name="modelSelection1" id="gb_model1" value="gb1">
+                            <label class="form-check-label" for="gb_model1">
+                            Gradient Boosting
+                            </label>
+                        </div>
+                        <div class="form-check col-lg-6">
+                            <input class="form-check-input" type="radio" name="modelSelection1" id="svr_model1" value="SVR1">
+                            <label class="form-check-label" for="svr_model1">
+                            Support Vector Regression
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group mt-2">
+                        <label for="test_split1">Choose Test Split</label>
+                        <input type="number" class="form-control" id="test_split1" aria-describedby="testSplitHelp1"
+                        value="0.25">
+                        <small id="testSplitHelp1" class="form-text text-muted">Answer between 0 to 1.</small>
+                    </div>
+                    <button class="btn btn-primary mt-2" id="trainModelBtn1" type="button">Train Model</button>
+                </form>
+            </div>
+        </div>
+
+    <!-- Heading Bar -->
+        <div style="width: 75%; margin: 10px auto; background-color: #0275d8; border-radius: 3px; text-align: center;">
+            <p style="color: white; font-size: 1.3rem; font-weight: 600;" id="headingText"></p>
+        </div>
+
+    <!-- Training Summary -->
+        <div style="width: 75%; margin: 20px auto; border: 1px solid rgb(211, 211, 211); border-radius: 3px; padding: 10px;">
+            <h2>Training Summary</h2>
+            <div style="display: flex;">
+                <p style="flex-grow: 1;">Selected Model: </p>
+                <p id="selectedModelContentBox1">Not available</p>
+            </div>
+            <div style="display: flex;">
+                <p style="flex-grow: 1;">Test Split: </p>
+                <p id="testSplitContentBox1">Not available</p>
+            </div>
+            <div style="display: flex;">
+                <p style="flex-grow: 1;">Accuracy Score: </p>
+                <p id="accuracyContentBox1">Not available</p>
+            </div>
+            </div>
+
+    <!-- process Parameters -->
+        <div id="testModel1" style="width: 75%; margin: 20px auto;">
+            <h2>Process Parameters</h2>
+            <form>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label for="PI32272" style="text-align: center;">PI32272</label><br>
+                            <div class="input">
+                                <input type="text" id="PI32272" name="PI32272" style="color: black;"><br>    
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label for="HIC32603" style="text-align: center;">HIC32603</label><br>
+                            <div class="input">
+                                <input type="text" id="HIC32603" name="HIC32603" style="color: black;"><br>    
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label for="TI32015" style="text-align: center;">TI32015</label><br>
+                            <div class="input">
+                                <input type="text" id="TI32015" name="TI32015"style="color: black;"><br>    
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label for="AN_LOAD" style="text-align: center;">AN_LOAD</label><br>
+                            <div class="input">
+                                <input type="text" id="AN_LOAD" name="AN_LOAD"style="color: black;"><br>    
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    
+                <button class="btn btn-primary disabled" id="submitBtn1" type="button" disabled>Submit</button>
+            </form>
+        </div>
+
+    <!-- Output Bar -->
+        <div style="width: 75; margin: 10px auto; background-color: #5cb85c; border-radius: 3px; text-align: center;">
+            <p style="color: white; font-size: 1.3rem; font-weight: 600;" id="resultText1"></p>
+        </div>
+
+        <footer style="background-color: #0275d8; bottom: 0; left: 0; text-align: center; color: white; padding: 3px;">
+            <p style="margin: 0;">EHC Chemometrics models</p>
+        </footer>
+
+        <py-script>
+            import pandas as pd
+            import pickle
+            from sklearn.model_selection import train_test_split, GridSearchCV
+            from sklearn.metrics import accuracy_score, mean_squared_error,r2_score
+            from pyodide.http import open_url
+            import numpy as np
+            from sklearn.svm import SVR
+            from sklearn.ensemble import RandomForestRegressor
+            from sklearn.preprocessing import StandardScaler
+            from sklearn.pipeline import Pipeline
+            from sklearn.decomposition import PCA
+            from sklearn.linear_model import (LinearRegression, HuberRegressor, RANSACRegressor, TheilSenRegressor)
+            from sklearn.datasets import make_regression
+            from sklearn.ensemble import GradientBoostingRegressor
+            
+    
+    
+               # Reading the content of CSV file.
+            data1 = {'Date ': {0: '9/20/2023', 1: '9/20/2023', 2: '9/21/2023', 3: '9/21/2023', 4: '9/21/2023', 5: '9/21/2023', 6: '9/22/2023', 7: '9/22/2023', 8: '9/22/2023', 9: '9/22/2023', 10: '9/23/2023', 11: '9/23/2023', 12: '9/23/2023', 13: '9/23/2023', 14: '9/24/2023', 15: '9/24/2023', 16: '9/24/2023', 17: '9/24/2023', 18: '9/25/2023', 19: '9/25/2023', 20: '9/25/2023', 21: '9/25/2023', 22: '9/26/2023', 23: '9/26/2023', 24: '9/26/2023', 25: '9/26/2023', 26: '9/27/2023', 27: '9/27/2023', 28: '9/27/2023', 29: '9/27/2023', 30: '9/28/2023', 31: '9/28/2023', 32: '9/28/2023', 33: '9/28/2023', 34: '9/29/2023', 35: '9/29/2023', 36: '9/29/2023', 37: '9/30/2023', 38: '9/30/2023', 39: '9/30/2023', 40: '9/30/2023', 41: '10/1/2023', 42: '10/1/2023', 43: '10/1/2023', 44: '10/1/2023', 45: '10/2/2023', 46: '10/2/2023', 47: '10/2/2023', 48: '10/2/2023', 49: '10/3/2023', 50: '10/3/2023', 51: '10/3/2023', 52: '10/3/2023', 53: '10/4/2023', 54: '10/4/2023', 55: '10/4/2023', 56: '10/4/2023', 57: '10/5/2023'}, 'Time ': {0: '14:00', 1: '20:00', 2: '2:00', 3: '8:00', 4: '14:00', 5: '20:00', 6: '2:00', 7: '8:00', 8: '14:00', 9: '20:00', 10: '2:00', 11: '8:00', 12: '14:00', 13: '20:00', 14: '2:00', 15: '8:00', 16: '14:00', 17: '20:00', 18: '2:00', 19: '8:00', 20: '14:00', 21: '20:00', 22: '2:00', 23: '8:00', 24: '14:00', 25: '20:00', 26: '2:00', 27: '8:00', 28: '14:00', 29: '20:00', 30: '2:00', 31: '8:00', 32: '14:00', 33: '20:00', 34: '2:00', 35: '14:00', 36: '20:00', 37: '2:00', 38: '8:00', 39: '14:00', 40: '20:00', 41: '2:00', 42: '8:00', 43: '14:00', 44: '20:00', 45: '2:00', 46: '8:00', 47: '14:00', 48: '20:00', 49: '2:00', 50: '8:00', 51: '14:00', 52: '20:00', 53: '2:00', 54: '8:00', 55: '14:00', 56: '20:00', 57: '2:00'}, 'SIC32859': {0: 30.0, 1: 30.0, 2: 30.0, 3: 30.0, 4: 30.0, 5: 30.0, 6: 30.0, 7: 30.0, 8: 30.0, 9: 30.0, 10: 30.0, 11: 30.0, 12: 30.0, 13: 30.0, 14: 30.0, 15: 30.0, 16: 30.0, 17: 30.0, 18: 30.0, 19: 29.0, 20: 44.0, 21: 44.0, 22: 44.0, 23: 44.0, 24: 44.0, 25: 44.0, 26: 44.0, 27: 44.0, 28: 44.0, 29: 44.0, 30: 44.0, 31: 44.0, 32: 44.0, 33: 44.0, 34: 44.0, 35: 45.0, 36: 45.0, 37: 45.0, 38: 44.0, 39: 44.0, 40: 45.0, 41: 45.0, 42: 45.0, 43: 31.0, 44: 31.0, 45: 31.0, 46: 31.0, 47: 31.0, 48: 31.0, 49: 31.0, 50: 31.0, 51: 31.0, 52: 31.0, 53: 31.0, 54: 30.0, 55: 30.0, 56: 30.0, 57: 30.0}, 'PI32272': {0: 1.6, 1: 1.6, 2: 1.65, 3: 1.65, 4: 1.7, 5: 1.71, 6: 1.68, 7: 1.7, 8: 1.73, 9: 1.71, 10: 1.69, 11: 1.59, 12: 1.64, 13: 1.62, 14: 1.63, 15: 1.65, 16: 1.71, 17: 1.65, 18: 1.72, 19: 1.6, 20: 3.12, 21: 3.2, 22: 3.2, 23: 3.36, 24: 3.36, 25: 3.3, 26: 3.32, 27: 3.33, 28: 3.32, 29: 3.2, 30: 3.18, 31: 3.18, 32: 3.21, 33: 3.2, 34: 3.19, 35: 3.33, 36: 3.33, 37: 3.32, 38: 3.3, 39: 3.3, 40: 3.3, 41: 3.35, 42: 3.3, 43: 1.72, 44: 1.7, 45: 1.71, 46: 1.71, 47: 1.72, 48: 1.71, 49: 1.71, 50: 1.73, 51: 1.73, 52: 1.73, 53: 1.74, 54: 1.62, 55: 1.64, 56: 1.63, 57: 1.64}, 'FI32446': {0: 32.0, 1: 32.0, 2: 32.0, 3: 32.0, 4: 31.5, 5: 31.2, 6: 31.1, 7: 30.77, 8: 31.04, 9: 30.8, 10: 31.0, 11: 30.71, 12: 30.76, 13: 30.7, 14: 30.6, 15: 30.21, 16: 30.5, 17: 30.5, 18: 30.85, 19: 30.3, 20: 37.0, 21: 37.0, 22: 37.0, 23: 37.0, 24: 37.0, 25: 37.0, 26: 37.19, 27: 38.0, 28: 37.71, 29: 40.15, 30: 40.14, 31: 40.25, 32: 39.6, 33: 39.55, 34: 39.2, 35: 40.0, 36: 39.0, 37: 38.8, 38: 38.9, 39: 39.2, 40: 40.0, 41: 40.0, 42: 40.1, 43: 35.4, 44: 35.7, 45: 35.7, 46: 35.8, 47: 35.7, 48: 36.05, 49: 36.28, 50: 36.07, 51: 36.36, 52: 36.28, 53: 36.08, 54: 34.6, 55: 34.5, 56: 34.73, 57: 34.45}, 'FI32446-TH': {0: 40.6, 1: 40.6, 2: 40.6, 3: 40.6, 4: 40.6, 5: 40.6, 6: 40.6, 7: 40.6, 8: 40.6, 9: 40.6, 10: 40.6, 11: 40.6, 12: 40.6, 13: 40.6, 14: 40.6, 15: 40.6, 16: 40.6, 17: 40.6, 18: 40.67, 19: 39.65, 20: 54.55, 21: 54.55, 22: 54.55, 23: 54.55, 24: 54.36, 25: 54.55, 26: 54.55, 27: 54.55, 28: 54.55, 29: 54.55, 30: 54.55, 31: 54.55, 32: 54.55, 33: 54.55, 34: 54.55, 35: 55.5, 36: 55.5, 37: 55.5, 38: 54.55, 39: 54.55, 40: 55.5, 41: 55.5, 42: 55.5, 43: 41.7, 44: 41.7, 45: 41.7, 46: 41.7, 47: 41.7, 48: 41.7, 49: 41.7, 50: 41.7, 51: 41.7, 52: 41.7, 53: 41.7, 54: 40.7, 55: 40.75, 56: 40.75, 57: 40.75}, 'FI31460': {0: 26.1, 1: 25.9, 2: 26.0, 3: 25.9, 4: 26.0, 5: 25.8, 6: 25.8, 7: 25.74, 8: 26.1, 9: 26.1, 10: 26.1, 11: 26.1, 12: 26.2, 13: 26.0, 14: 26.0, 15: 25.95, 16: 25.93, 17: 26.0, 18: 26.08, 19: 26.0, 20: 35.7, 21: 35.5, 22: 35.6, 23: 35.66, 24: 35.66, 25: 35.8, 26: 35.91, 27: 35.78, 28: 35.89, 29: 35.52, 30: 35.6, 31: 35.5, 32: 35.3, 33: 35.7, 34: 35.6, 35: 35.0, 36: 35.6, 37: 35.65, 38: 35.6, 39: 35.5, 40: 35.6, 41: 35.6, 42: 35.5, 43: 26.1, 44: 26.2, 45: 26.25, 46: 26.24, 47: 26.03, 48: 26.01, 49: 25.95, 50: 26.01, 51: 26.07, 52: 25.99, 53: 25.88, 54: 26.3, 55: 26.0, 56: 26.04, 57: 26.07}, 'FI32401': {0: 102.0, 1: 104.0, 2: 104.0, 3: 104.0, 4: 102.0, 5: 104.0, 6: 104.0, 7: 103.0, 8: 103.0, 9: 103.0, 10: 103.0, 11: 102.0, 12: 103.0, 13: 104.0, 14: 104.0, 15: 103.0, 16: 103.0, 17: 104.0, 18: 102.0, 19: 102.0, 20: 130.0, 21: 130.0, 22: 130.0, 23: 131.0, 24: 131.0, 25: 131.0, 26: 132.0, 27: 133.0, 28: 130.0, 29: 130.0, 30: 130.0, 31: 131.0, 32: 131.0, 33: 131.0, 34: 131.0, 35: 131.0, 36: 131.0, 37: 131.0, 38: 130.0, 39: 132.0, 40: 131.0, 41: 131.0, 42: 130.0, 43: 100.0, 44: 100.0, 45: 101.0, 46: 103.0, 47: 103.0, 48: 102.0, 49: 103.0, 50: 105.0, 51: 105.0, 52: 104.0, 53: 104.0, 54: 104.0, 55: 104.0, 56: 103.0, 57: 103.0}, 'TIC32086': {0: 92.3, 1: 91.4, 2: 92.4, 3: 92.0, 4: 92.0, 5: 91.6, 6: 92.4, 7: 91.8, 8: 92.0, 9: 91.5, 10: 92.3, 11: 92.1, 12: 92.1, 13: 92.0, 14: 91.7, 15: 91.4, 16: 92.5, 17: 92.4, 18: 92.4, 19: 91.7, 20: 92.0, 21: 92.0, 22: 92.0, 23: 91.4, 24: 91.4, 25: 91.5, 26: 90.6, 27: 91.5, 28: 91.0, 29: 91.0, 30: 91.0, 31: 91.0, 32: 91.0, 33: 90.0, 34: 90.0, 35: 90.0, 36: 90.0, 37: 90.4, 38: 90.0, 39: 90.0, 40: 90.0, 41: 91.0, 42: 91.0, 43: 91.0, 44: 91.0, 45: 91.0, 46: 91.0, 47: 91.0, 48: 90.6, 49: 91.1, 50: 91.0, 51: 91.0, 52: 91.2, 53: 90.7, 54: 90.7, 55: 91.0, 56: 90.8, 57: 90.8}, 'HIC32603': {0: 50.0, 1: 47.0, 2: 45.0, 3: 45.0, 4: 53.0, 5: 47.0, 6: 46.0, 7: 42.0, 8: 60.0, 9: 50.0, 10: 45.0, 11: 45.0, 12: 57.0, 13: 52.0, 14: 46.0, 15: 43.0, 16: 55.0, 17: 45.0, 18: 42.0, 19: 44.0, 20: 82.0, 21: 78.0, 22: 70.0, 23: 71.0, 24: 83.0, 25: 83.0, 26: 72.0, 27: 78.0, 28: 75.0, 29: 76.0, 30: 72.0, 31: 63.0, 32: 82.0, 33: 77.0, 34: 76.0, 35: 80.0, 36: 81.0, 37: 81.0, 38: 73.0, 39: 80.0, 40: 80.0, 41: 78.0, 42: 69.0, 43: 56.0, 44: 55.0, 45: 53.0, 46: 43.0, 47: 46.5, 48: 45.0, 49: 45.0, 50: 40.0, 51: 40.0, 52: 43.0, 53: 41.0, 54: 38.0, 55: 47.0, 56: 47.0, 57: 46.0}, 'SIC32808- 32K001A': {0: 56.0, 1: 53.0, 2: 51.0, 3: 51.0, 4: 58.0, 5: 53.0, 6: 52.0, 7: 48.0, 8: 65.0, 9: 56.0, 10: 51.0, 11: 51.0, 12: 62.0, 13: 57.0, 14: 52.0, 15: 49.0, 16: 60.0, 17: 51.0, 18: 48.0, 19: 44.0, 20: 85.0, 21: 82.0, 22: 74.0, 23: 75.0, 24: 86.0, 25: 86.0, 26: 76.0, 27: 80.0, 28: 77.0, 29: 80.0, 30: 76.0, 31: 67.0, 32: 85.0, 33: 80.0, 34: 79.0, 35: 83.0, 36: 84.0, 37: 84.0, 38: 76.0, 39: 83.0, 40: 83.0, 41: 81.0, 42: 72.0, 43: 59.0, 44: 60.0, 45: 58.0, 46: 49.0, 47: 53.0, 48: 51.0, 49: 51.0, 50: 47.0, 51: 47.0, 52: 49.0, 53: 47.0, 54: 38.0, 55: 53.0, 56: 53.0, 57: 52.0}, 'TI32015': {0: 30.2, 1: 28.2, 2: 28.0, 3: 30.0, 4: 32.0, 5: 29.3, 6: 28.9, 7: 27.6, 8: 31.4, 9: 29.1, 10: 28.5, 11: 27.9, 12: 31.8, 13: 29.0, 14: 28.0, 15: 27.0, 16: 30.7, 17: 27.7, 18: 25.2, 19: 25.2, 20: 31.4, 21: 30.0, 22: 27.8, 23: 29.0, 24: 32.8, 25: 31.5, 26: 29.2, 27: 29.4, 28: 31.0, 29: 28.8, 30: 26.8, 31: 25.8, 32: 32.3, 33: 30.0, 34: 30.4, 35: 33.0, 36: 31.1, 37: 30.0, 38: 29.1, 39: 32.8, 40: 33.0, 41: 30.2, 42: 29.7, 43: 32.0, 44: 29.2, 45: 29.3, 46: 27.1, 47: 28.3, 48: 27.8, 49: 27.2, 50: 27.9, 51: 27.7, 52: 27.0, 53: 26.4, 54: 27.3, 55: 28.7, 56: 28.0, 57: 27.2}, 'AYI31749': {0: 95.45, 1: 95.49, 2: 95.5, 3: 95.46, 4: 95.45, 5: 95.46, 6: 95.46, 7: 95.45, 8: 95.45, 9: 95.47, 10: 95.47, 11: 95.51, 12: 95.49, 13: 95.5, 14: 95.3, 15: 95.5, 16: 95.48, 17: 95.5, 18: 95.52, 19: 95.49, 20: 95.4, 21: 94.4, 22: 94.4, 23: 95.45, 24: 95.45, 25: 95.41, 26: 95.42, 27: 95.42, 28: 95.4, 29: 95.44, 30: 95.42, 31: 95.4, 32: 95.4, 33: 95.4, 34: 95.42, 35: 96.4, 36: 96.32, 37: 96.4, 38: 96.45, 39: 97.5, 40: 97.5, 41: 97.66, 42: 97.73, 43: 97.83, 44: 98.0, 45: 98.28, 46: 98.3, 47: 98.5, 48: 98.59, 49: 98.58, 50: 98.81, 51: 98.89, 52: 99.08, 53: 99.18, 54: 99.62, 55: 99.8, 56: 95.68, 57: 100.34}, 'AN_LOAD': {0: 77.3, 1: 77.0, 2: 79.5, 3: 78.0, 4: 79.0, 5: 76.5, 6: 78.8, 7: 77.6, 8: 78.4, 9: 79.0, 10: 77.0, 11: 77.3, 12: 78.2, 13: 78.0, 14: 76.0, 15: 78.5, 16: 77.3, 17: 78.0, 18: 78.3, 19: 78.0, 20: 107.0, 21: 107.0, 22: 107.0, 23: 110.0, 24: 109.0, 25: 110.0, 26: 110.9, 27: 110.0, 28: 110.0, 29: 108.0, 30: 109.0, 31: 108.0, 32: 108.0, 33: 109.0, 34: 109.0, 35: 105.0, 36: 109.0, 37: 109.0, 38: 109.0, 39: 108.0, 40: 105.0, 41: 106.0, 42: 108.0, 43: 76.1, 44: 78.7, 45: 76.0, 46: 77.0, 47: 78.0, 48: 77.2, 49: 76.7, 50: 75.0, 51: 78.0, 52: 77.7, 53: 76.1, 54: 76.0, 55: 78.0, 56: 77.3, 57: 77.3}, 'TI32084': {0: 89.2, 1: 89.2, 2: 88.9, 3: 88.2, 4: 88.8, 5: 89.5, 6: 88.7, 7: 88.0, 8: 89.5, 9: 89.5, 10: 88.9, 11: 88.1, 12: 89.3, 13: 89.4, 14: 89.1, 15: 87.9, 16: 89.8, 17: 89.8, 18: 89.0, 19: 87.7, 20: 90.4, 21: 90.0, 22: 89.7, 23: 88.2, 24: 88.2, 25: 89.7, 26: 88.7, 27: 88.0, 28: 89.0, 29: 89.4, 30: 89.0, 31: 87.9, 32: 89.8, 33: 89.0, 34: 88.0, 35: 88.7, 36: 88.9, 37: 88.3, 38: 88.9, 39: 88.7, 40: 88.7, 41: 88.6, 42: 88.7, 43: 89.8, 44: 88.8, 45: 88.1, 46: 87.8, 47: 88.1, 48: 87.9, 49: 87.6, 50: 87.8, 51: 88.0, 52: 88.2, 53: 87.8, 54: 87.2, 55: 88.5, 56: 88.5, 57: 88.0}, 'TI32087': {0: 26.8, 1: 26.8, 2: 26.1, 3: 26.0, 4: 25.8, 5: 25.7, 6: 25.0, 7: 24.7, 8: 26.7, 9: 25.7, 10: 24.8, 11: 24.5, 12: 26.6, 13: 26.6, 14: 24.9, 15: 24.2, 16: 26.8, 17: 26.3, 18: 25.7, 19: 24.2, 20: 29.2, 21: 29.2, 22: 29.0, 23: 28.2, 24: 29.5, 25: 29.7, 26: 28.6, 27: 29.8, 28: 29.9, 29: 25.9, 30: 27.4, 31: 26.8, 32: 28.0, 33: 27.8, 34: 28.3, 35: 27.0, 36: 28.0, 37: 27.3, 38: 27.1, 39: 28.2, 40: 28.0, 41: 27.5, 42: 28.7, 43: 23.4, 44: 24.6, 45: 24.4, 46: 24.5, 47: 24.8, 48: 24.7, 49: 24.6, 50: 24.2, 51: 24.1, 52: 24.2, 53: 24.7, 54: 24.4, 55: 25.9, 56: 26.5, 57: 25.9}, 'TI32046': {0: 55.3, 1: 55.1, 2: 54.9, 3: 54.0, 4: 55.3, 5: 55.8, 6: 54.5, 7: 54.5, 8: 54.6, 9: 55.4, 10: 54.6, 11: 54.2, 12: 55.8, 13: 55.1, 14: 54.9, 15: 54.6, 16: 54.7, 17: 56.2, 18: 54.7, 19: 53.5, 20: 60.4, 21: 59.0, 22: 58.0, 23: 58.8, 24: 58.8, 25: 58.9, 26: 58.3, 27: 58.2, 28: 58.7, 29: 56.8, 30: 56.8, 31: 56.9, 32: 59.0, 33: 58.2, 34: 57.5, 35: 61.0, 36: 59.1, 37: 57.6, 38: 52.7, 39: 58.5, 40: 61.0, 41: 58.1, 42: 58.7, 43: 55.6, 44: 54.4, 45: 54.5, 46: 55.3, 47: 55.9, 48: 56.1, 49: 55.2, 50: 55.3, 51: 56.6, 52: 55.9, 53: 55.6, 54: 57.3, 55: 56.4, 56: 55.7, 57: 55.0}, 'PI32243': {0: -1.3, 1: -1.5, 2: -1.4, 3: -1.4, 4: -1.5, 5: -1.5, 6: -1.5, 7: -1.6, 8: -1.6, 9: -1.6, 10: -1.5, 11: -1.7, 12: -1.6, 13: -1.7, 14: -1.5, 15: -1.6, 16: -1.7, 17: -1.5, 18: -1.5, 19: -1.6, 20: -1.3, 21: -1.3, 22: -1.3, 23: -1.2, 24: -1.2, 25: -1.4, 26: -1.3, 27: -1.2, 28: -1.4, 29: -1.4, 30: -1.3, 31: -1.2, 32: -1.3, 33: -1.2, 34: -1.2, 35: -1.2, 36: -1.4, 37: -1.2, 38: -1.2, 39: -1.3, 40: -1.2, 41: -1.2, 42: -1.1, 43: -1.2, 44: -1.5, 45: -1.5, 46: -1.5, 47: -1.4, 48: -1.5, 49: -1.5, 50: -1.5, 51: -1.4, 52: -1.4, 53: -1.5, 54: -1.2, 55: -1.4, 56: -1.4, 57: -1.6}, 'MC_S004': {0: 0.05, 1: 0.05, 2: 0.07, 3: 0.06, 4: 0.06, 5: 0.06, 6: 0.07, 7: 0.08, 8: 0.07, 9: 0.06, 10: 0.06, 11: 0.06, 12: 0.05, 13: 0.06, 14: 0.05, 15: 0.07, 16: 0.04, 17: 0.06, 18: 0.03, 19: 0.04, 20: 0.04, 21: 0.04, 22: 0.03, 23: 0.06, 24: 0.04, 25: 0.05, 26: 0.05, 27: 0.06, 28: 0.07, 29: 0.04, 30: 0.05, 31: 0.04, 32: 0.05, 33: 0.04, 34: 0.06, 35: 0.04, 36: 0.09, 37: 0.05, 38: 0.04, 39: 0.06, 40: 0.04, 41: 0.05, 42: 0.05, 43: 0.06, 44: 0.05, 45: 0.05, 46: 0.06, 47: 0.06, 48: 0.06, 49: 0.05, 50: 0.06, 51: 0.06, 52: 0.05, 53: 0.04, 54: 0.05, 55: 0.05, 56: 0.07, 57: 0.06}, 'MC_H007': {0: 0.06, 1: 0.05, 2: 0.07, 3: 0.09, 4: 0.07, 5: 0.06, 6: 0.06, 7: 0.11, 8: 0.05, 9: 0.07, 10: 0.07, 11: 0.07, 12: 0.06, 13: 0.06, 14: 0.07, 15: 0.09, 16: 0.04, 17: 0.06, 18: 0.04, 19: 0.04, 20: 0.05, 21: 0.05, 22: 0.05, 23: 0.06, 24: 0.06, 25: 0.05, 26: 0.06, 27: 0.06, 28: 0.07, 29: 0.06, 30: 0.04, 31: 0.05, 32: 0.07, 33: 0.04, 34: 0.07, 35: 0.04, 36: 0.06, 37: 0.05, 38: 0.05, 39: 0.07, 40: 0.06, 41: 0.05, 42: 0.06, 43: 0.08, 44: 0.07, 45: 0.05, 46: 0.06, 47: 0.06, 48: 0.07, 49: 0.05, 50: 0.06, 51: 0.06, 52: 0.06, 53: 0.06, 54: 0.06, 55: 0.05, 56: 0.05, 57: 0.06}, 'MC_H021': {0: 0.3, 1: 0.3, 2: 0.44, 3: 0.62, 4: 0.37, 5: 0.24, 6: 0.51, 7: 0.88, 8: 0.37, 9: 0.36, 10: 0.54, 11: 0.31, 12: 0.44, 13: 0.56, 14: 0.39, 15: 0.34, 16: 0.26, 17: 0.3, 18: 0.25, 19: 0.47, 20: 0.52, 21: 0.68, 22: 0.71, 23: 0.66, 24: 0.57, 25: 0.53, 26: 0.61, 27: 0.55, 28: 0.7, 29: 0.69, 30: 0.6, 31: 0.67, 32: 0.44, 33: 0.6, 34: 0.63, 35: 1.1, 36: 0.57, 37: 0.57, 38: 0.86, 39: 0.54, 40: 0.66, 41: 0.77, 42: 0.86, 43: 0.45, 44: 0.64, 45: 0.65, 46: 0.53, 47: 0.45, 48: 0.41, 49: 0.57, 50: 0.5, 51: 0.3, 52: 0.47, 53: 0.66, 54: 0.67, 55: 0.44, 56: 0.52, 57: 0.53}, 'MC_H003': {0: 3.05, 1: 3.11, 2: 3.27, 3: 3.28, 4: 3.44, 5: 3.34, 6: 3.21, 7: 3.29, 8: 3.2, 9: 3.06, 10: 3.01, 11: 2.92, 12: 3.0, 13: 3.12, 14: 2.98, 15: 2.9, 16: 2.9, 17: 3.01, 18: 3.01, 19: 2.9, 20: 3.03, 21: 2.25, 22: 3.01, 23: 3.12, 24: 3.07, 25: 2.91, 26: 3.0, 27: 3.06, 28: 3.01, 29: 2.7, 30: 2.7, 31: 3.11, 32: 3.18, 33: 2.94, 34: 3.1, 35: 3.21, 36: 2.75, 37: 2.62, 38: 2.94, 39: 2.98, 40: 2.95, 41: 3.1, 42: 3.11, 43: 3.13, 44: 3.11, 45: 2.93, 46: 3.11, 47: 2.96, 48: 2.97, 49: 3.14, 50: 3.13, 51: 3.14, 52: 2.99, 53: 3.02, 54: 3.02, 55: 2.97, 56: 2.8, 57: 2.87}, 'between': {0: 95.5, 1: 94.9, 2: 95.2, 3: 94.1, 4: 94.8, 5: 94.2, 6: 94.6, 7: 94.5, 8: 94.5, 9: 94.4, 10: 94.3, 11: 94.4, 12: 94.4, 13: 93.2, 14: 94.4, 15: 96.9, 16: 93.8, 17: 95.2, 18: 95.2, 19: 93.3, 20: 93.2, 21: 94.2, 22: 94.2, 23: 92.7, 24: 93.0, 25: 94.7, 26: 94.7, 27: 93.3, 28: 93.5, 29: 95.0, 30: 94.4, 31: 92.6, 32: 93.1, 33: 93.8, 34: 92.9, 35: 90.5, 36: 94.2, 37: 94.4, 38: 93.5, 39: 95.1, 40: 94.4, 41: 94.4, 42: 92.8, 43: 93.8, 44: 95.2, 45: 94.8, 46: 94.1, 47: 94.1, 48: 95.5, 49: 94.2, 50: 93.4, 51: 94.5, 52: 94.7, 53: 94.1, 54: 93.5, 55: 94.0, 56: 94.5, 57: 94.7}, 'Under': {0: 0.5, 1: 0.5, 2: 0.5, 3: 0.3, 4: 0.5, 5: 0.4, 6: 0.4, 7: 0.5, 8: 0.5, 9: 0.8, 10: 0.7, 11: 0.3, 12: 0.4, 13: 0.7, 14: 0.4, 15: 0.2, 16: 0.3, 17: 0.5, 18: 0.5, 19: 0.4, 20: 0.4, 21: 0.4, 22: 0.4, 23: 0.4, 24: 0.4, 25: 0.4, 26: 0.5, 27: 0.5, 28: 0.4, 29: 0.4, 30: 0.4, 31: 0.5, 32: 0.7, 33: 0.7, 34: 0.4, 35: 0.8, 36: 0.5, 37: 0.5, 38: 0.5, 39: 0.9, 40: 0.8, 41: 0.8, 42: 0.6, 43: 0.6, 44: 0.7, 45: 0.6, 46: 0.5, 47: 0.8, 48: 0.8, 49: 0.6, 50: 0.5, 51: 0.9, 52: 0.7, 53: 0.6, 54: 0.4, 55: 0.7, 56: 0.7, 57: 0.5}, 'Bulk': {0: 722.0, 1: 720.0, 2: 724.0, 3: 728.0, 4: 726.0, 5: 724.0, 6: 720.0, 7: 716.0, 8: 720.0, 9: 722.0, 10: 726.0, 11: 720.0, 12: 720.0, 13: 724.0, 14: 718.0, 15: 718.0, 16: 724.0, 17: 723.0, 18: 724.0, 19: 725.0, 20: 728.0, 21: 730.0, 22: 738.0, 23: 732.0, 24: 730.0, 25: 732.0, 26: 729.0, 27: 729.0, 28: 730.0, 29: 725.0, 30: 727.0, 31: 728.0, 32: 720.0, 33: 724.0, 34: 724.0, 35: 718.0, 36: 724.0, 37: 724.0, 38: 730.0, 39: 716.0, 40: 718.0, 41: 722.0, 42: 722.0, 43: 696.0, 44: 718.0, 45: 722.0, 46: 718.0, 47: 720.0, 48: 718.0, 49: 714.0, 50: 712.0, 51: 714.0, 52: 711.0, 53: 712.0, 54: 720.0, 55: 716.0, 56: 714.0, 57: 722.0}, 'FOR': {0: 10.9, 1: 10.6, 2: 10.4, 3: 10.5, 4: 10.3, 5: 10.6, 6: 10.3, 7: 10.4, 8: 10.6, 9: 10.5, 10: 10.6, 11: 10.7, 12: 10.7, 13: 10.8, 14: 10.3, 15: 10.4, 16: 10.6, 17: 10.5, 18: 10.6, 19: 10.8, 20: 10.6, 21: 10.7, 22: 10.1, 23: 10.5, 24: 10.5, 25: 10.3, 26: 10.5, 27: 10.7, 28: 10.8, 29: 10.5, 30: 10.4, 31: 10.7, 32: 11.0, 33: 10.9, 34: 10.4, 35: 10.5, 36: 10.8, 37: 10.4, 38: 10.6, 39: 11.0, 40: 10.7, 41: 10.6, 42: 11.0, 43: 11.0, 44: 10.8, 45: 10.4, 46: 10.6, 47: 11.1, 48: 10.9, 49: 10.6, 50: 10.8, 51: 11.0, 52: 10.5, 53: 10.8, 54: 10.6, 55: 11.0, 56: 10.9, 57: 10.6}, 'Hardness': {0: 0.5, 1: 0.5, 2: 0.5, 3: 0.5, 4: 0.4, 5: 0.5, 6: 0.5, 7: 0.5, 8: 0.6, 9: 0.5, 10: 0.5, 11: 0.5, 12: 0.7, 13: 0.5, 14: 0.6, 15: 0.5, 16: 0.6, 17: 0.6, 18: 0.7, 19: 0.7, 20: 0.6, 21: 0.6, 22: 0.7, 23: 0.5, 24: 0.5, 25: 0.6, 26: 0.6, 27: 0.5, 28: 0.6, 29: 0.8, 30: 0.7, 31: 0.7, 32: 0.5, 33: 0.6, 34: 0.5, 35: 0.5, 36: 0.5, 37: 0.5, 38: 0.6, 39: 0.6, 40: 0.5, 41: 0.5, 42: 0.5, 43: 0.5, 44: 0.5, 45: 0.5, 46: 0.5, 47: 0.4, 48: 0.5, 49: 0.5, 50: 0.5, 51: 0.5, 52: 0.5, 53: 0.6, 54: 0.5, 55: 0.5, 56: 0.5, 57: 0.6}, 'Coating ': {0: 1110.0, 1: 1090.0, 2: 1045.0, 3: 1015.0, 4: 950.0, 5: 1060.0, 6: 1000.0, 7: 1090.0, 8: 1020.0, 9: 1060.0, 10: 1090.0, 11: 1090.0, 12: 1060.0, 13: 1070.0, 14: 1055.0, 15: 1205.0, 16: 1200.0, 17: 1215.0, 18: 1300.0, 19: 1115.0, 20: 1180.0, 21: 1135.0, 22: 1135.0, 23: 950.0, 24: 1000.0, 25: 1055.0, 26: 1165.0, 27: 1000.0, 28: 975.0, 29: 975.0, 30: 1160.0, 31: 1000.0, 32: 1095.0, 33: 955.0, 34: 990.0, 35: 1015.0, 36: 950.0, 37: 920.0, 38: 1000.0, 39: 1000.0, 40: 1020.0, 41: 1035.0, 42: 1160.0, 43: 1125.0, 44: 1080.0, 45: 1145.0, 46: 1085.0, 47: 1030.0, 48: 1135.0, 49: 1145.0, 50: 1100.0, 51: 1200.0, 52: 1100.0, 53: 1170.0, 54: 1280.0, 55: 1075.0, 56: 1130.0, 57: 1140.0}}
+            data1= pd.DataFrame.from_dict(data1, orient='index').T
+            <!--pyscript.write("headingText", "Pre-Processing the Dataset...") # This is used to send messages to the HTML DOM.--->
+    
+            def model_selection1():
+                selectedModel1 = document.querySelector('input[name="modelSelection1"]:checked').value;
+                if selectedModel1 == "rf1":
+                    document.getElementById("selectedModelContentBox1").innerText = "Random Forest Regressor";
+                    return RandomForestRegressor(n_estimators = 100, random_state = 0)
+                elif selectedModel1 == "lr1":
+                    document.getElementById("selectedModelContentBox1").innerText = "Linear Regression";
+                    return LinearRegression()
+                elif selectedModel1 == "gb1":
+                    document.getElementById("selectedModelContentBox1").innerText = "Gradient Boosting Regressor";
+                    return GradientBoostingRegressor(n_estimators=100, learning_rate=1.0, max_depth=1, random_state=0)
+                else:
+                    document.getElementById("selectedModelContentBox1").innerText = "Support Vector Regression";
+                    return SVR(kernel = 'linear')
+    
+            def classifier1(model1, X1_train, X1_test, y1_train, y1_test):
+                clf1 = model1
+                clf1.fit(X1_train, y1_train)
+                y1_pred = clf1.predict(X1_test)
+                y1_score = clf1.fit(X1_train, y1_train)
+                y1_test_reshaped = y1_test.values.reshape(-1, 1) if isinstance(y1_test, pd.Series) else y1_test.reshape(-1, 1)
+                y1_pred_reshaped = y1_pred.reshape(-1, 1)
+                acc_score1 = r2_score(y1_test_reshaped, y1_pred_reshaped)
+                return acc_score1, model1
+            def trainModel1(e=None):
+                global trained_model1
+                 
+                processed_data1 = data1
+            
+                # Take the Test Split as an input by the user
+                test_split1 = float(document.getElementById("test_split1").value)
+            # If the test split is greater than 1 or less than 0 then we will throw an error.
+                if test_split1 > 1 or test_split1 < 0:
+                    pyscript.write("headingText", "Choose Test Split between 0 to 1")
+                    return
+                document.getElementById("testSplitContentBox1").innerText = test_split1;
+            
+                x1= data1.iloc[:, [3,9,11,13]]
+                y1= data1['Coating ']
+            
+                  # Splitting the Dataset into training and testing.
+                X1_train, X1_test, y1_train, y1_test = train_test_split(x1, y1, test_size=test_split1, random_state=42)
+                  # Below function can return the regression model choosen by the user
+                model1 = model_selection1()
+                pyscript.write("headingText", "Model Training Started...")
+                acc_score1, trained_model1 = classifier1(model1, X1_train, X1_test, y1_train, y1_test)
+                pyscript.write("headingText", "Model Training Completed.")
+            
+                    # Writing the value of accuracy to the DOM
+                document.getElementById("accuracyContentBox1").innerText = f"{round(acc_score1*100, 2)}%";
+                
+                # Below code is to enable the Model Training Button when the Model is successfully trained.
+                document.getElementById("submitBtn1").classList.remove("disabled");
+                document.getElementById("submitBtn1").disabled = False;
+                document.getElementById("trainModelBtn1").classList.remove("disabled");
+                document.getElementById("trainModelBtn1").disabled = False;
+            
+                if e:
+                    e.preventDefault()
+                return False
+
+            def testModel1(e=None):
+                PI32272 = float(document.getElementById("PI32272").value)
+                HIC32603 = float(document.getElementById("HIC32603").value)
+                TI32015 = float(document.getElementById("TI32015").value)
+                AN_LOAD = float(document.getElementById("AN_LOAD").value)
+            
+                arr1 = np.array([PI32272, HIC32603, TI32015,AN_LOAD]).astype('float32')
+                arr1 = np.expand_dims(arr1, axis=0)
+                result1 = trained_model1.predict(arr1)
+                condition1 = result1
+            
+                pyscript.write("resultText1", f"Predicted Value of Coating: {condition1}")
+            
+                if e:
+                    e.preventDefault()
+                return False
+    
+            document.getElementById("submitBtn1").onclick = testModel1
+            document.getElementById("trainModelBtn1").onclick = trainModel1
+    
+
+    
+
+        </py-script>
+    
+    
+    
+    
+            <!-- Optional JavaScript -->
+            <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+
+</div>
+<div id="Bulk" class="tab-content">
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+            integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    
+        <!-- Pyscript Library -->
+        <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
+        <script defer src="https://pyscript.net/alpha/pyscript.js"></script>
+    
+        <title>Chemometrics</title>
+    
+
+    
+        <!-- Google Fonts CDN -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet"></head>
+    <style>
+        .input {
+    
+      color: white;
+      
+      border: 1px solid black;
+      margin: 5px;
+      padding: 5px;
+    
+    
+    }
+    
+        * {
+            margin: 0;
+            padding: 0;
+        }
+    
+        html {
+            scroll-behavior: smooth;
+        }
+    
+        body {
+            font-family: 'Montserrat', sans-serif;
+        }
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 500;
+        }
+        h2 {
+            font-size: 2.1rem;
+            font-weight: 500;
+        }
+
+    </style>
+    
+    <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <a class="navbar-brand mx-auto" href="https://patentimages.storage.googleapis.com/09/05/12/345dfbdae6e60c/US2798301.pdf" target="_blank">Bulk process </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        
+        </nav>
+<!-- Include Bootstrap JS and Popper.js -->
+       <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+       <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js" integrity="sha384-MCw98/SFnGE8fJT3Y2mEIkpDUMyOOhKKPB9N5sLeF5BkSYW9tjUgyI9DkNc70OfQ" crossorigin="anonymous"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh+Wy6qQ/mAeN49g6PFi72Ho7ftj3Z9xVZ2Kx" crossorigin="anonymous"></script>
+    <!-- Heading Content -->
+        <div
+        style="width: 75%; margin: 20px auto; box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 6px 0 rgba(0, 0, 0, 0.12); border-radius: 4px; text-align: center; padding: 10px;">
+            <h1>Bulk Density</h1>
+            <p>Bulk prediction model .</p>
+        <!--img src="images/homeImg.png" style="margin: 20px auto; width: 90%; height: 450px;" class="img-fluid" alt=""-->
+        </div>
+
+    <!-- Training Parameters -->
+        <div style="width: 75%; margin: 30px auto;" id="trainModel2">
+            <h2>Training of Model</h2>
+            <div>
+                <form>
+                    <div class="row ml-1">
+                        <div class="form-check col-lg-6">
+                            <input class="form-check-input" type="radio" name="modelSelection2" id="rf_model2" value="rf2"
+                            checked>
+                            <label class="form-check-label" for="rf_model2">
+                            Random Forest
+                            </label>
+                        </div>
+                        <div class="form-check col-lg-6">
+                            <input class="form-check-input" type="radio" name="modelSelection2" id="lr_model2" value="lr2">
+                            <label class="form-check-label" for="lr_model2">
+                            Linear Regression
+                            </label>
+                        </div>
+                        <div class="form-check col-lg-6">
+                            <input class="form-check-input" type="radio" name="modelSelection2" id="gb_model2" value="gb2">
+                            <label class="form-check-label" for="gb_model2">
+                            Gradient Boosting
+                            </label>
+                        </div>
+                        <div class="form-check col-lg-6">
+                            <input class="form-check-input" type="radio" name="modelSelection2" id="svr_model2" value="SVR2">
+                            <label class="form-check-label" for="svr_model2">
+                            Support Vector Regression
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group mt-2">
+                        <label for="test_split2">Choose Test Split</label>
+                        <input type="number" class="form-control" id="test_split2" aria-describedby="testSplitHelp2"
+                        value="0.25">
+                        <small id="testSplitHelp2" class="form-text text-muted">Answer between 0 to 1.</small>
+                    </div>
+                    <button class="btn btn-primary mt-2" id="trainModelBtn2" type="button">Train Model</button>
+                </form>
+            </div>
+        </div>
+
+    <!-- Heading Bar -->
+        <div style="width: 75%; margin: 10px auto; background-color: #0275d8; border-radius: 3px; text-align: center;">
+            <p style="color: white; font-size: 1.3rem; font-weight: 600;" id="headingText"></p>
+        </div>
+
+    <!-- Training Summary -->
+        <div style="width: 75%; margin: 20px auto; border: 1px solid rgb(211, 211, 211); border-radius: 3px; padding: 10px;">
+            <h2>Training Summary</h2>
+            <div style="display: flex;">
+                <p style="flex-grow: 1;">Selected Model: </p>
+                <p id="selectedModelContentBox2">Not available</p>
+            </div>
+            <div style="display: flex;">
+                <p style="flex-grow: 1;">Test Split: </p>
+                <p id="testSplitContentBox2">Not available</p>
+            </div>
+            <div style="display: flex;">
+                <p style="flex-grow: 1;">Accuracy Score: </p>
+                <p id="accuracyContentBox2">Not available</p>
+            </div>
+            </div>
+
+    <!-- process Parameters -->
+        <div id="testModel2" style="width: 75%; margin: 20px auto;">
+            <h2>Process Parameters</h2>
+            <form>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label for="HIC_32603" style="text-align: center;">HIC32603</label><br>
+                            <div class="input">
+                                <input type="text" id="HIC_32603" name="HIC_32603" style="color: black;"><br>    
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label for="AYI31749" style="text-align: center;">AYI31749</label><br>
+                            <div class="input">
+                                <input type="text" id="AYI31749" name="AYI31749" style="color: black;"><br>    
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label for="TI32087" style="text-align: center;">TI32087</label><br>
+                            <div class="input">
+                                <input type="text" id="TI32087" name="TI32087"style="color: black;"><br>    
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label for="ANLOAD" style="text-align: center;">AN_LOAD</label><br>
+                            <div class="input">
+                                <input type="text" id="ANLOAD" name="ANLOAD"style="color: black;"><br>    
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    
+                <button class="btn btn-primary disabled" id="submitBtn2" type="button" disabled>Submit</button>
+            </form>
+        </div>
+
+    <!-- Output Bar -->
+        <div style="width: 75; margin: 10px auto; background-color: #5cb85c; border-radius: 3px; text-align: center;">
+            <p style="color: white; font-size: 1.3rem; font-weight: 600;" id="resultText2"></p>
+        </div>
+
+        <footer style="background-color: #0275d8; bottom: 0; left: 0; text-align: center; color: white; padding: 3px;">
+            <p style="margin: 0;">EHC Chemometrics models</p>
+        </footer>
+
+        <py-script>
+            import pandas as pd
+            import pickle
+            from sklearn.model_selection import train_test_split, GridSearchCV
+            from sklearn.metrics import accuracy_score, mean_squared_error,r2_score
+            from pyodide.http import open_url
+            import numpy as np
+            from sklearn.svm import SVR
+            from sklearn.ensemble import RandomForestRegressor
+            from sklearn.preprocessing import StandardScaler
+            from sklearn.pipeline import Pipeline
+            from sklearn.decomposition import PCA
+            from sklearn.linear_model import (LinearRegression, HuberRegressor, RANSACRegressor, TheilSenRegressor)
+            from sklearn.datasets import make_regression
+            from sklearn.ensemble import GradientBoostingRegressor
+            
+    
+    
+               # Reading the content of CSV file.
+            data2 = {'Date ': {0: '9/20/2023', 1: '9/20/2023', 2: '9/21/2023', 3: '9/21/2023', 4: '9/21/2023', 5: '9/21/2023', 6: '9/22/2023', 7: '9/22/2023', 8: '9/22/2023', 9: '9/22/2023', 10: '9/23/2023', 11: '9/23/2023', 12: '9/23/2023', 13: '9/23/2023', 14: '9/24/2023', 15: '9/24/2023', 16: '9/24/2023', 17: '9/24/2023', 18: '9/25/2023', 19: '9/25/2023', 20: '9/25/2023', 21: '9/25/2023', 22: '9/26/2023', 23: '9/26/2023', 24: '9/26/2023', 25: '9/26/2023', 26: '9/27/2023', 27: '9/27/2023', 28: '9/27/2023', 29: '9/27/2023', 30: '9/28/2023', 31: '9/28/2023', 32: '9/28/2023', 33: '9/28/2023', 34: '9/29/2023', 35: '9/29/2023', 36: '9/29/2023', 37: '9/30/2023', 38: '9/30/2023', 39: '9/30/2023', 40: '9/30/2023', 41: '10/1/2023', 42: '10/1/2023', 43: '10/1/2023', 44: '10/1/2023', 45: '10/2/2023', 46: '10/2/2023', 47: '10/2/2023', 48: '10/2/2023', 49: '10/3/2023', 50: '10/3/2023', 51: '10/3/2023', 52: '10/3/2023', 53: '10/4/2023', 54: '10/4/2023', 55: '10/4/2023', 56: '10/4/2023', 57: '10/5/2023'}, 'Time ': {0: '14:00', 1: '20:00', 2: '2:00', 3: '8:00', 4: '14:00', 5: '20:00', 6: '2:00', 7: '8:00', 8: '14:00', 9: '20:00', 10: '2:00', 11: '8:00', 12: '14:00', 13: '20:00', 14: '2:00', 15: '8:00', 16: '14:00', 17: '20:00', 18: '2:00', 19: '8:00', 20: '14:00', 21: '20:00', 22: '2:00', 23: '8:00', 24: '14:00', 25: '20:00', 26: '2:00', 27: '8:00', 28: '14:00', 29: '20:00', 30: '2:00', 31: '8:00', 32: '14:00', 33: '20:00', 34: '2:00', 35: '14:00', 36: '20:00', 37: '2:00', 38: '8:00', 39: '14:00', 40: '20:00', 41: '2:00', 42: '8:00', 43: '14:00', 44: '20:00', 45: '2:00', 46: '8:00', 47: '14:00', 48: '20:00', 49: '2:00', 50: '8:00', 51: '14:00', 52: '20:00', 53: '2:00', 54: '8:00', 55: '14:00', 56: '20:00', 57: '2:00'}, 'SIC32859': {0: 30.0, 1: 30.0, 2: 30.0, 3: 30.0, 4: 30.0, 5: 30.0, 6: 30.0, 7: 30.0, 8: 30.0, 9: 30.0, 10: 30.0, 11: 30.0, 12: 30.0, 13: 30.0, 14: 30.0, 15: 30.0, 16: 30.0, 17: 30.0, 18: 30.0, 19: 29.0, 20: 44.0, 21: 44.0, 22: 44.0, 23: 44.0, 24: 44.0, 25: 44.0, 26: 44.0, 27: 44.0, 28: 44.0, 29: 44.0, 30: 44.0, 31: 44.0, 32: 44.0, 33: 44.0, 34: 44.0, 35: 45.0, 36: 45.0, 37: 45.0, 38: 44.0, 39: 44.0, 40: 45.0, 41: 45.0, 42: 45.0, 43: 31.0, 44: 31.0, 45: 31.0, 46: 31.0, 47: 31.0, 48: 31.0, 49: 31.0, 50: 31.0, 51: 31.0, 52: 31.0, 53: 31.0, 54: 30.0, 55: 30.0, 56: 30.0, 57: 30.0}, 'PI32272': {0: 1.6, 1: 1.6, 2: 1.65, 3: 1.65, 4: 1.7, 5: 1.71, 6: 1.68, 7: 1.7, 8: 1.73, 9: 1.71, 10: 1.69, 11: 1.59, 12: 1.64, 13: 1.62, 14: 1.63, 15: 1.65, 16: 1.71, 17: 1.65, 18: 1.72, 19: 1.6, 20: 3.12, 21: 3.2, 22: 3.2, 23: 3.36, 24: 3.36, 25: 3.3, 26: 3.32, 27: 3.33, 28: 3.32, 29: 3.2, 30: 3.18, 31: 3.18, 32: 3.21, 33: 3.2, 34: 3.19, 35: 3.33, 36: 3.33, 37: 3.32, 38: 3.3, 39: 3.3, 40: 3.3, 41: 3.35, 42: 3.3, 43: 1.72, 44: 1.7, 45: 1.71, 46: 1.71, 47: 1.72, 48: 1.71, 49: 1.71, 50: 1.73, 51: 1.73, 52: 1.73, 53: 1.74, 54: 1.62, 55: 1.64, 56: 1.63, 57: 1.64}, 'FI32446': {0: 32.0, 1: 32.0, 2: 32.0, 3: 32.0, 4: 31.5, 5: 31.2, 6: 31.1, 7: 30.77, 8: 31.04, 9: 30.8, 10: 31.0, 11: 30.71, 12: 30.76, 13: 30.7, 14: 30.6, 15: 30.21, 16: 30.5, 17: 30.5, 18: 30.85, 19: 30.3, 20: 37.0, 21: 37.0, 22: 37.0, 23: 37.0, 24: 37.0, 25: 37.0, 26: 37.19, 27: 38.0, 28: 37.71, 29: 40.15, 30: 40.14, 31: 40.25, 32: 39.6, 33: 39.55, 34: 39.2, 35: 40.0, 36: 39.0, 37: 38.8, 38: 38.9, 39: 39.2, 40: 40.0, 41: 40.0, 42: 40.1, 43: 35.4, 44: 35.7, 45: 35.7, 46: 35.8, 47: 35.7, 48: 36.05, 49: 36.28, 50: 36.07, 51: 36.36, 52: 36.28, 53: 36.08, 54: 34.6, 55: 34.5, 56: 34.73, 57: 34.45}, 'FI32446-TH': {0: 40.6, 1: 40.6, 2: 40.6, 3: 40.6, 4: 40.6, 5: 40.6, 6: 40.6, 7: 40.6, 8: 40.6, 9: 40.6, 10: 40.6, 11: 40.6, 12: 40.6, 13: 40.6, 14: 40.6, 15: 40.6, 16: 40.6, 17: 40.6, 18: 40.67, 19: 39.65, 20: 54.55, 21: 54.55, 22: 54.55, 23: 54.55, 24: 54.36, 25: 54.55, 26: 54.55, 27: 54.55, 28: 54.55, 29: 54.55, 30: 54.55, 31: 54.55, 32: 54.55, 33: 54.55, 34: 54.55, 35: 55.5, 36: 55.5, 37: 55.5, 38: 54.55, 39: 54.55, 40: 55.5, 41: 55.5, 42: 55.5, 43: 41.7, 44: 41.7, 45: 41.7, 46: 41.7, 47: 41.7, 48: 41.7, 49: 41.7, 50: 41.7, 51: 41.7, 52: 41.7, 53: 41.7, 54: 40.7, 55: 40.75, 56: 40.75, 57: 40.75}, 'FI31460': {0: 26.1, 1: 25.9, 2: 26.0, 3: 25.9, 4: 26.0, 5: 25.8, 6: 25.8, 7: 25.74, 8: 26.1, 9: 26.1, 10: 26.1, 11: 26.1, 12: 26.2, 13: 26.0, 14: 26.0, 15: 25.95, 16: 25.93, 17: 26.0, 18: 26.08, 19: 26.0, 20: 35.7, 21: 35.5, 22: 35.6, 23: 35.66, 24: 35.66, 25: 35.8, 26: 35.91, 27: 35.78, 28: 35.89, 29: 35.52, 30: 35.6, 31: 35.5, 32: 35.3, 33: 35.7, 34: 35.6, 35: 35.0, 36: 35.6, 37: 35.65, 38: 35.6, 39: 35.5, 40: 35.6, 41: 35.6, 42: 35.5, 43: 26.1, 44: 26.2, 45: 26.25, 46: 26.24, 47: 26.03, 48: 26.01, 49: 25.95, 50: 26.01, 51: 26.07, 52: 25.99, 53: 25.88, 54: 26.3, 55: 26.0, 56: 26.04, 57: 26.07}, 'FI32401': {0: 102.0, 1: 104.0, 2: 104.0, 3: 104.0, 4: 102.0, 5: 104.0, 6: 104.0, 7: 103.0, 8: 103.0, 9: 103.0, 10: 103.0, 11: 102.0, 12: 103.0, 13: 104.0, 14: 104.0, 15: 103.0, 16: 103.0, 17: 104.0, 18: 102.0, 19: 102.0, 20: 130.0, 21: 130.0, 22: 130.0, 23: 131.0, 24: 131.0, 25: 131.0, 26: 132.0, 27: 133.0, 28: 130.0, 29: 130.0, 30: 130.0, 31: 131.0, 32: 131.0, 33: 131.0, 34: 131.0, 35: 131.0, 36: 131.0, 37: 131.0, 38: 130.0, 39: 132.0, 40: 131.0, 41: 131.0, 42: 130.0, 43: 100.0, 44: 100.0, 45: 101.0, 46: 103.0, 47: 103.0, 48: 102.0, 49: 103.0, 50: 105.0, 51: 105.0, 52: 104.0, 53: 104.0, 54: 104.0, 55: 104.0, 56: 103.0, 57: 103.0}, 'TIC32086': {0: 92.3, 1: 91.4, 2: 92.4, 3: 92.0, 4: 92.0, 5: 91.6, 6: 92.4, 7: 91.8, 8: 92.0, 9: 91.5, 10: 92.3, 11: 92.1, 12: 92.1, 13: 92.0, 14: 91.7, 15: 91.4, 16: 92.5, 17: 92.4, 18: 92.4, 19: 91.7, 20: 92.0, 21: 92.0, 22: 92.0, 23: 91.4, 24: 91.4, 25: 91.5, 26: 90.6, 27: 91.5, 28: 91.0, 29: 91.0, 30: 91.0, 31: 91.0, 32: 91.0, 33: 90.0, 34: 90.0, 35: 90.0, 36: 90.0, 37: 90.4, 38: 90.0, 39: 90.0, 40: 90.0, 41: 91.0, 42: 91.0, 43: 91.0, 44: 91.0, 45: 91.0, 46: 91.0, 47: 91.0, 48: 90.6, 49: 91.1, 50: 91.0, 51: 91.0, 52: 91.2, 53: 90.7, 54: 90.7, 55: 91.0, 56: 90.8, 57: 90.8}, 'HIC32603': {0: 50.0, 1: 47.0, 2: 45.0, 3: 45.0, 4: 53.0, 5: 47.0, 6: 46.0, 7: 42.0, 8: 60.0, 9: 50.0, 10: 45.0, 11: 45.0, 12: 57.0, 13: 52.0, 14: 46.0, 15: 43.0, 16: 55.0, 17: 45.0, 18: 42.0, 19: 44.0, 20: 82.0, 21: 78.0, 22: 70.0, 23: 71.0, 24: 83.0, 25: 83.0, 26: 72.0, 27: 78.0, 28: 75.0, 29: 76.0, 30: 72.0, 31: 63.0, 32: 82.0, 33: 77.0, 34: 76.0, 35: 80.0, 36: 81.0, 37: 81.0, 38: 73.0, 39: 80.0, 40: 80.0, 41: 78.0, 42: 69.0, 43: 56.0, 44: 55.0, 45: 53.0, 46: 43.0, 47: 46.5, 48: 45.0, 49: 45.0, 50: 40.0, 51: 40.0, 52: 43.0, 53: 41.0, 54: 38.0, 55: 47.0, 56: 47.0, 57: 46.0}, 'SIC32808- 32K001A': {0: 56.0, 1: 53.0, 2: 51.0, 3: 51.0, 4: 58.0, 5: 53.0, 6: 52.0, 7: 48.0, 8: 65.0, 9: 56.0, 10: 51.0, 11: 51.0, 12: 62.0, 13: 57.0, 14: 52.0, 15: 49.0, 16: 60.0, 17: 51.0, 18: 48.0, 19: 44.0, 20: 85.0, 21: 82.0, 22: 74.0, 23: 75.0, 24: 86.0, 25: 86.0, 26: 76.0, 27: 80.0, 28: 77.0, 29: 80.0, 30: 76.0, 31: 67.0, 32: 85.0, 33: 80.0, 34: 79.0, 35: 83.0, 36: 84.0, 37: 84.0, 38: 76.0, 39: 83.0, 40: 83.0, 41: 81.0, 42: 72.0, 43: 59.0, 44: 60.0, 45: 58.0, 46: 49.0, 47: 53.0, 48: 51.0, 49: 51.0, 50: 47.0, 51: 47.0, 52: 49.0, 53: 47.0, 54: 38.0, 55: 53.0, 56: 53.0, 57: 52.0}, 'TI32015': {0: 30.2, 1: 28.2, 2: 28.0, 3: 30.0, 4: 32.0, 5: 29.3, 6: 28.9, 7: 27.6, 8: 31.4, 9: 29.1, 10: 28.5, 11: 27.9, 12: 31.8, 13: 29.0, 14: 28.0, 15: 27.0, 16: 30.7, 17: 27.7, 18: 25.2, 19: 25.2, 20: 31.4, 21: 30.0, 22: 27.8, 23: 29.0, 24: 32.8, 25: 31.5, 26: 29.2, 27: 29.4, 28: 31.0, 29: 28.8, 30: 26.8, 31: 25.8, 32: 32.3, 33: 30.0, 34: 30.4, 35: 33.0, 36: 31.1, 37: 30.0, 38: 29.1, 39: 32.8, 40: 33.0, 41: 30.2, 42: 29.7, 43: 32.0, 44: 29.2, 45: 29.3, 46: 27.1, 47: 28.3, 48: 27.8, 49: 27.2, 50: 27.9, 51: 27.7, 52: 27.0, 53: 26.4, 54: 27.3, 55: 28.7, 56: 28.0, 57: 27.2}, 'AYI31749': {0: 95.45, 1: 95.49, 2: 95.5, 3: 95.46, 4: 95.45, 5: 95.46, 6: 95.46, 7: 95.45, 8: 95.45, 9: 95.47, 10: 95.47, 11: 95.51, 12: 95.49, 13: 95.5, 14: 95.3, 15: 95.5, 16: 95.48, 17: 95.5, 18: 95.52, 19: 95.49, 20: 95.4, 21: 94.4, 22: 94.4, 23: 95.45, 24: 95.45, 25: 95.41, 26: 95.42, 27: 95.42, 28: 95.4, 29: 95.44, 30: 95.42, 31: 95.4, 32: 95.4, 33: 95.4, 34: 95.42, 35: 96.4, 36: 96.32, 37: 96.4, 38: 96.45, 39: 97.5, 40: 97.5, 41: 97.66, 42: 97.73, 43: 97.83, 44: 98.0, 45: 98.28, 46: 98.3, 47: 98.5, 48: 98.59, 49: 98.58, 50: 98.81, 51: 98.89, 52: 99.08, 53: 99.18, 54: 99.62, 55: 99.8, 56: 95.68, 57: 100.34}, 'AN_LOAD': {0: 77.3, 1: 77.0, 2: 79.5, 3: 78.0, 4: 79.0, 5: 76.5, 6: 78.8, 7: 77.6, 8: 78.4, 9: 79.0, 10: 77.0, 11: 77.3, 12: 78.2, 13: 78.0, 14: 76.0, 15: 78.5, 16: 77.3, 17: 78.0, 18: 78.3, 19: 78.0, 20: 107.0, 21: 107.0, 22: 107.0, 23: 110.0, 24: 109.0, 25: 110.0, 26: 110.9, 27: 110.0, 28: 110.0, 29: 108.0, 30: 109.0, 31: 108.0, 32: 108.0, 33: 109.0, 34: 109.0, 35: 105.0, 36: 109.0, 37: 109.0, 38: 109.0, 39: 108.0, 40: 105.0, 41: 106.0, 42: 108.0, 43: 76.1, 44: 78.7, 45: 76.0, 46: 77.0, 47: 78.0, 48: 77.2, 49: 76.7, 50: 75.0, 51: 78.0, 52: 77.7, 53: 76.1, 54: 76.0, 55: 78.0, 56: 77.3, 57: 77.3}, 'TI32084': {0: 89.2, 1: 89.2, 2: 88.9, 3: 88.2, 4: 88.8, 5: 89.5, 6: 88.7, 7: 88.0, 8: 89.5, 9: 89.5, 10: 88.9, 11: 88.1, 12: 89.3, 13: 89.4, 14: 89.1, 15: 87.9, 16: 89.8, 17: 89.8, 18: 89.0, 19: 87.7, 20: 90.4, 21: 90.0, 22: 89.7, 23: 88.2, 24: 88.2, 25: 89.7, 26: 88.7, 27: 88.0, 28: 89.0, 29: 89.4, 30: 89.0, 31: 87.9, 32: 89.8, 33: 89.0, 34: 88.0, 35: 88.7, 36: 88.9, 37: 88.3, 38: 88.9, 39: 88.7, 40: 88.7, 41: 88.6, 42: 88.7, 43: 89.8, 44: 88.8, 45: 88.1, 46: 87.8, 47: 88.1, 48: 87.9, 49: 87.6, 50: 87.8, 51: 88.0, 52: 88.2, 53: 87.8, 54: 87.2, 55: 88.5, 56: 88.5, 57: 88.0}, 'TI32087': {0: 26.8, 1: 26.8, 2: 26.1, 3: 26.0, 4: 25.8, 5: 25.7, 6: 25.0, 7: 24.7, 8: 26.7, 9: 25.7, 10: 24.8, 11: 24.5, 12: 26.6, 13: 26.6, 14: 24.9, 15: 24.2, 16: 26.8, 17: 26.3, 18: 25.7, 19: 24.2, 20: 29.2, 21: 29.2, 22: 29.0, 23: 28.2, 24: 29.5, 25: 29.7, 26: 28.6, 27: 29.8, 28: 29.9, 29: 25.9, 30: 27.4, 31: 26.8, 32: 28.0, 33: 27.8, 34: 28.3, 35: 27.0, 36: 28.0, 37: 27.3, 38: 27.1, 39: 28.2, 40: 28.0, 41: 27.5, 42: 28.7, 43: 23.4, 44: 24.6, 45: 24.4, 46: 24.5, 47: 24.8, 48: 24.7, 49: 24.6, 50: 24.2, 51: 24.1, 52: 24.2, 53: 24.7, 54: 24.4, 55: 25.9, 56: 26.5, 57: 25.9}, 'TI32046': {0: 55.3, 1: 55.1, 2: 54.9, 3: 54.0, 4: 55.3, 5: 55.8, 6: 54.5, 7: 54.5, 8: 54.6, 9: 55.4, 10: 54.6, 11: 54.2, 12: 55.8, 13: 55.1, 14: 54.9, 15: 54.6, 16: 54.7, 17: 56.2, 18: 54.7, 19: 53.5, 20: 60.4, 21: 59.0, 22: 58.0, 23: 58.8, 24: 58.8, 25: 58.9, 26: 58.3, 27: 58.2, 28: 58.7, 29: 56.8, 30: 56.8, 31: 56.9, 32: 59.0, 33: 58.2, 34: 57.5, 35: 61.0, 36: 59.1, 37: 57.6, 38: 52.7, 39: 58.5, 40: 61.0, 41: 58.1, 42: 58.7, 43: 55.6, 44: 54.4, 45: 54.5, 46: 55.3, 47: 55.9, 48: 56.1, 49: 55.2, 50: 55.3, 51: 56.6, 52: 55.9, 53: 55.6, 54: 57.3, 55: 56.4, 56: 55.7, 57: 55.0}, 'PI32243': {0: -1.3, 1: -1.5, 2: -1.4, 3: -1.4, 4: -1.5, 5: -1.5, 6: -1.5, 7: -1.6, 8: -1.6, 9: -1.6, 10: -1.5, 11: -1.7, 12: -1.6, 13: -1.7, 14: -1.5, 15: -1.6, 16: -1.7, 17: -1.5, 18: -1.5, 19: -1.6, 20: -1.3, 21: -1.3, 22: -1.3, 23: -1.2, 24: -1.2, 25: -1.4, 26: -1.3, 27: -1.2, 28: -1.4, 29: -1.4, 30: -1.3, 31: -1.2, 32: -1.3, 33: -1.2, 34: -1.2, 35: -1.2, 36: -1.4, 37: -1.2, 38: -1.2, 39: -1.3, 40: -1.2, 41: -1.2, 42: -1.1, 43: -1.2, 44: -1.5, 45: -1.5, 46: -1.5, 47: -1.4, 48: -1.5, 49: -1.5, 50: -1.5, 51: -1.4, 52: -1.4, 53: -1.5, 54: -1.2, 55: -1.4, 56: -1.4, 57: -1.6}, 'MC_S004': {0: 0.05, 1: 0.05, 2: 0.07, 3: 0.06, 4: 0.06, 5: 0.06, 6: 0.07, 7: 0.08, 8: 0.07, 9: 0.06, 10: 0.06, 11: 0.06, 12: 0.05, 13: 0.06, 14: 0.05, 15: 0.07, 16: 0.04, 17: 0.06, 18: 0.03, 19: 0.04, 20: 0.04, 21: 0.04, 22: 0.03, 23: 0.06, 24: 0.04, 25: 0.05, 26: 0.05, 27: 0.06, 28: 0.07, 29: 0.04, 30: 0.05, 31: 0.04, 32: 0.05, 33: 0.04, 34: 0.06, 35: 0.04, 36: 0.09, 37: 0.05, 38: 0.04, 39: 0.06, 40: 0.04, 41: 0.05, 42: 0.05, 43: 0.06, 44: 0.05, 45: 0.05, 46: 0.06, 47: 0.06, 48: 0.06, 49: 0.05, 50: 0.06, 51: 0.06, 52: 0.05, 53: 0.04, 54: 0.05, 55: 0.05, 56: 0.07, 57: 0.06}, 'MC_H007': {0: 0.06, 1: 0.05, 2: 0.07, 3: 0.09, 4: 0.07, 5: 0.06, 6: 0.06, 7: 0.11, 8: 0.05, 9: 0.07, 10: 0.07, 11: 0.07, 12: 0.06, 13: 0.06, 14: 0.07, 15: 0.09, 16: 0.04, 17: 0.06, 18: 0.04, 19: 0.04, 20: 0.05, 21: 0.05, 22: 0.05, 23: 0.06, 24: 0.06, 25: 0.05, 26: 0.06, 27: 0.06, 28: 0.07, 29: 0.06, 30: 0.04, 31: 0.05, 32: 0.07, 33: 0.04, 34: 0.07, 35: 0.04, 36: 0.06, 37: 0.05, 38: 0.05, 39: 0.07, 40: 0.06, 41: 0.05, 42: 0.06, 43: 0.08, 44: 0.07, 45: 0.05, 46: 0.06, 47: 0.06, 48: 0.07, 49: 0.05, 50: 0.06, 51: 0.06, 52: 0.06, 53: 0.06, 54: 0.06, 55: 0.05, 56: 0.05, 57: 0.06}, 'MC_H021': {0: 0.3, 1: 0.3, 2: 0.44, 3: 0.62, 4: 0.37, 5: 0.24, 6: 0.51, 7: 0.88, 8: 0.37, 9: 0.36, 10: 0.54, 11: 0.31, 12: 0.44, 13: 0.56, 14: 0.39, 15: 0.34, 16: 0.26, 17: 0.3, 18: 0.25, 19: 0.47, 20: 0.52, 21: 0.68, 22: 0.71, 23: 0.66, 24: 0.57, 25: 0.53, 26: 0.61, 27: 0.55, 28: 0.7, 29: 0.69, 30: 0.6, 31: 0.67, 32: 0.44, 33: 0.6, 34: 0.63, 35: 1.1, 36: 0.57, 37: 0.57, 38: 0.86, 39: 0.54, 40: 0.66, 41: 0.77, 42: 0.86, 43: 0.45, 44: 0.64, 45: 0.65, 46: 0.53, 47: 0.45, 48: 0.41, 49: 0.57, 50: 0.5, 51: 0.3, 52: 0.47, 53: 0.66, 54: 0.67, 55: 0.44, 56: 0.52, 57: 0.53}, 'MC_H003': {0: 3.05, 1: 3.11, 2: 3.27, 3: 3.28, 4: 3.44, 5: 3.34, 6: 3.21, 7: 3.29, 8: 3.2, 9: 3.06, 10: 3.01, 11: 2.92, 12: 3.0, 13: 3.12, 14: 2.98, 15: 2.9, 16: 2.9, 17: 3.01, 18: 3.01, 19: 2.9, 20: 3.03, 21: 2.25, 22: 3.01, 23: 3.12, 24: 3.07, 25: 2.91, 26: 3.0, 27: 3.06, 28: 3.01, 29: 2.7, 30: 2.7, 31: 3.11, 32: 3.18, 33: 2.94, 34: 3.1, 35: 3.21, 36: 2.75, 37: 2.62, 38: 2.94, 39: 2.98, 40: 2.95, 41: 3.1, 42: 3.11, 43: 3.13, 44: 3.11, 45: 2.93, 46: 3.11, 47: 2.96, 48: 2.97, 49: 3.14, 50: 3.13, 51: 3.14, 52: 2.99, 53: 3.02, 54: 3.02, 55: 2.97, 56: 2.8, 57: 2.87}, 'between': {0: 95.5, 1: 94.9, 2: 95.2, 3: 94.1, 4: 94.8, 5: 94.2, 6: 94.6, 7: 94.5, 8: 94.5, 9: 94.4, 10: 94.3, 11: 94.4, 12: 94.4, 13: 93.2, 14: 94.4, 15: 96.9, 16: 93.8, 17: 95.2, 18: 95.2, 19: 93.3, 20: 93.2, 21: 94.2, 22: 94.2, 23: 92.7, 24: 93.0, 25: 94.7, 26: 94.7, 27: 93.3, 28: 93.5, 29: 95.0, 30: 94.4, 31: 92.6, 32: 93.1, 33: 93.8, 34: 92.9, 35: 90.5, 36: 94.2, 37: 94.4, 38: 93.5, 39: 95.1, 40: 94.4, 41: 94.4, 42: 92.8, 43: 93.8, 44: 95.2, 45: 94.8, 46: 94.1, 47: 94.1, 48: 95.5, 49: 94.2, 50: 93.4, 51: 94.5, 52: 94.7, 53: 94.1, 54: 93.5, 55: 94.0, 56: 94.5, 57: 94.7}, 'Under': {0: 0.5, 1: 0.5, 2: 0.5, 3: 0.3, 4: 0.5, 5: 0.4, 6: 0.4, 7: 0.5, 8: 0.5, 9: 0.8, 10: 0.7, 11: 0.3, 12: 0.4, 13: 0.7, 14: 0.4, 15: 0.2, 16: 0.3, 17: 0.5, 18: 0.5, 19: 0.4, 20: 0.4, 21: 0.4, 22: 0.4, 23: 0.4, 24: 0.4, 25: 0.4, 26: 0.5, 27: 0.5, 28: 0.4, 29: 0.4, 30: 0.4, 31: 0.5, 32: 0.7, 33: 0.7, 34: 0.4, 35: 0.8, 36: 0.5, 37: 0.5, 38: 0.5, 39: 0.9, 40: 0.8, 41: 0.8, 42: 0.6, 43: 0.6, 44: 0.7, 45: 0.6, 46: 0.5, 47: 0.8, 48: 0.8, 49: 0.6, 50: 0.5, 51: 0.9, 52: 0.7, 53: 0.6, 54: 0.4, 55: 0.7, 56: 0.7, 57: 0.5}, 'Bulk': {0: 722.0, 1: 720.0, 2: 724.0, 3: 728.0, 4: 726.0, 5: 724.0, 6: 720.0, 7: 716.0, 8: 720.0, 9: 722.0, 10: 726.0, 11: 720.0, 12: 720.0, 13: 724.0, 14: 718.0, 15: 718.0, 16: 724.0, 17: 723.0, 18: 724.0, 19: 725.0, 20: 728.0, 21: 730.0, 22: 738.0, 23: 732.0, 24: 730.0, 25: 732.0, 26: 729.0, 27: 729.0, 28: 730.0, 29: 725.0, 30: 727.0, 31: 728.0, 32: 720.0, 33: 724.0, 34: 724.0, 35: 718.0, 36: 724.0, 37: 724.0, 38: 730.0, 39: 716.0, 40: 718.0, 41: 722.0, 42: 722.0, 43: 696.0, 44: 718.0, 45: 722.0, 46: 718.0, 47: 720.0, 48: 718.0, 49: 714.0, 50: 712.0, 51: 714.0, 52: 711.0, 53: 712.0, 54: 720.0, 55: 716.0, 56: 714.0, 57: 722.0}, 'FOR': {0: 10.9, 1: 10.6, 2: 10.4, 3: 10.5, 4: 10.3, 5: 10.6, 6: 10.3, 7: 10.4, 8: 10.6, 9: 10.5, 10: 10.6, 11: 10.7, 12: 10.7, 13: 10.8, 14: 10.3, 15: 10.4, 16: 10.6, 17: 10.5, 18: 10.6, 19: 10.8, 20: 10.6, 21: 10.7, 22: 10.1, 23: 10.5, 24: 10.5, 25: 10.3, 26: 10.5, 27: 10.7, 28: 10.8, 29: 10.5, 30: 10.4, 31: 10.7, 32: 11.0, 33: 10.9, 34: 10.4, 35: 10.5, 36: 10.8, 37: 10.4, 38: 10.6, 39: 11.0, 40: 10.7, 41: 10.6, 42: 11.0, 43: 11.0, 44: 10.8, 45: 10.4, 46: 10.6, 47: 11.1, 48: 10.9, 49: 10.6, 50: 10.8, 51: 11.0, 52: 10.5, 53: 10.8, 54: 10.6, 55: 11.0, 56: 10.9, 57: 10.6}, 'Hardness': {0: 0.5, 1: 0.5, 2: 0.5, 3: 0.5, 4: 0.4, 5: 0.5, 6: 0.5, 7: 0.5, 8: 0.6, 9: 0.5, 10: 0.5, 11: 0.5, 12: 0.7, 13: 0.5, 14: 0.6, 15: 0.5, 16: 0.6, 17: 0.6, 18: 0.7, 19: 0.7, 20: 0.6, 21: 0.6, 22: 0.7, 23: 0.5, 24: 0.5, 25: 0.6, 26: 0.6, 27: 0.5, 28: 0.6, 29: 0.8, 30: 0.7, 31: 0.7, 32: 0.5, 33: 0.6, 34: 0.5, 35: 0.5, 36: 0.5, 37: 0.5, 38: 0.6, 39: 0.6, 40: 0.5, 41: 0.5, 42: 0.5, 43: 0.5, 44: 0.5, 45: 0.5, 46: 0.5, 47: 0.4, 48: 0.5, 49: 0.5, 50: 0.5, 51: 0.5, 52: 0.5, 53: 0.6, 54: 0.5, 55: 0.5, 56: 0.5, 57: 0.6}, 'Coating ': {0: 1110.0, 1: 1090.0, 2: 1045.0, 3: 1015.0, 4: 950.0, 5: 1060.0, 6: 1000.0, 7: 1090.0, 8: 1020.0, 9: 1060.0, 10: 1090.0, 11: 1090.0, 12: 1060.0, 13: 1070.0, 14: 1055.0, 15: 1205.0, 16: 1200.0, 17: 1215.0, 18: 1300.0, 19: 1115.0, 20: 1180.0, 21: 1135.0, 22: 1135.0, 23: 950.0, 24: 1000.0, 25: 1055.0, 26: 1165.0, 27: 1000.0, 28: 975.0, 29: 975.0, 30: 1160.0, 31: 1000.0, 32: 1095.0, 33: 955.0, 34: 990.0, 35: 1015.0, 36: 950.0, 37: 920.0, 38: 1000.0, 39: 1000.0, 40: 1020.0, 41: 1035.0, 42: 1160.0, 43: 1125.0, 44: 1080.0, 45: 1145.0, 46: 1085.0, 47: 1030.0, 48: 1135.0, 49: 1145.0, 50: 1100.0, 51: 1200.0, 52: 1100.0, 53: 1170.0, 54: 1280.0, 55: 1075.0, 56: 1130.0, 57: 1140.0}}
+            data2= pd.DataFrame.from_dict(data2, orient='index').T
+            <!--pyscript.write("headingText", "Pre-Processing the Dataset...") # This is used to send messages to the HTML DOM.--->
+    
+            def model_selection2():
+                selectedModel2 = document.querySelector('input[name="modelSelection2"]:checked').value;
+                if selectedModel2 == "rf2":
+                    document.getElementById("selectedModelContentBox2").innerText = "Random Forest Regressor";
+                    return RandomForestRegressor(n_estimators = 100, random_state = 0)
+                elif selectedModel2 == "lr2":
+                    document.getElementById("selectedModelContentBox2").innerText = "Linear Regression";
+                    return LinearRegression()
+                elif selectedModel2 == "gb2":
+                    document.getElementById("selectedModelContentBox2").innerText = "Gradient Boosting Regressor";
+                    return GradientBoostingRegressor(n_estimators=100, learning_rate=1.0, max_depth=1, random_state=0)
+                else:
+                    document.getElementById("selectedModelContentBox2").innerText = "Support Vector Regression";
+                    return SVR(kernel = 'linear')
+    
+            def classifier2(model2, X2_train, X2_test, y2_train, y2_test):
+                clf2 = model2
+                clf2.fit(X2_train, y2_train)
+                y2_pred = clf2.predict(X2_test)
+                y2_score = clf2.fit(X2_train, y2_train)
+                y2_test_reshaped = y2_test.values.reshape(-1, 1) if isinstance(y2_test, pd.Series) else y2_test.reshape(-1, 1)
+                y2_pred_reshaped = y2_pred.reshape(-1, 1)
+                acc_score2 = r2_score(y2_test_reshaped, y2_pred_reshaped)
+                return acc_score2, model2
+            def trainModel2(e=None):
+                global trained_model2
+                 
+                processed_data2 = data2
+            
+                # Take the Test Split as an input by the user
+                test_split2 = float(document.getElementById("test_split2").value)
+            # If the test split is greater than 1 or less than 0 then we will throw an error.
+                if test_split2 > 1 or test_split2 < 0:
+                    pyscript.write("headingText", "Choose Test Split between 0 to 1")
+                    return
+                document.getElementById("testSplitContentBox2").innerText = test_split2;
+            
+                x2= data2.iloc[:, [9,12,13,15]]
+                y2= data2['Bulk']
+            
+                  # Splitting the Dataset into training and testing.
+                X2_train, X2_test, y2_train, y2_test = train_test_split(x2, y2, test_size=test_split2, random_state=42)
+                  # Below function can return the regression model choosen by the user
+                model2 = model_selection2()
+                pyscript.write("headingText", "Model Training Started...")
+                acc_score2, trained_model2 = classifier2(model2, X2_train, X2_test, y2_train, y2_test)
+                pyscript.write("headingText", "Model Training Completed.")
+            
+                    # Writing the value of accuracy to the DOM
+                document.getElementById("accuracyContentBox2").innerText = f"{round(acc_score2*100, 2)}%";
+                
+                # Below code is to enable the Model Training Button when the Model is successfully trained.
+                document.getElementById("submitBtn2").classList.remove("disabled");
+                document.getElementById("submitBtn2").disabled = False;
+                document.getElementById("trainModelBtn2").classList.remove("disabled");
+                document.getElementById("trainModelBtn2").disabled = False;
+            
+                if e:
+                    e.preventDefault()
+                return False
+
+            def testModel2(e=None):
+                HIC_32603 = float(document.getElementById("HIC_32603").value)
+                AYI31749 = float(document.getElementById("AYI31749").value)
+                TI32087 = float(document.getElementById("TI32087").value)
+                ANLOAD = float(document.getElementById("ANLOAD").value)
+            
+                arr2 = np.array([HIC_32603, AYI31749, TI32087,ANLOAD]).astype('float32')
+                arr2 = np.expand_dims(arr2, axis=0)
+                result2 = trained_model2.predict(arr2)
+                condition2 = result2
+            
+                pyscript.write("resultText2", f"Predicted Value of Bulk: {condition2}")
+            
+                if e:
+                    e.preventDefault()
+                return False
+    
+            document.getElementById("submitBtn2").onclick = testModel2
+            document.getElementById("trainModelBtn2").onclick = trainModel2
+</div>
+
+<script>
+    function openTab(tabName) {
+        // Hide all tabs and reset button styles
+        var tabs = document.getElementsByClassName('tab-content');
+        for (var i = 0; i < tabs.length; i++) {
+            tabs[i].style.display = 'none';
+        }
+
+        var buttons = document.getElementsByClassName('tab-button');
+        for (var i = 0; i < buttons.length; i++) {
+            buttons[i].classList.remove('active');
+        }
+
+        // Show the selected tab and set button style to active
+        document.getElementById(tabName).style.display = 'block';
+        event.currentTarget.classList.add('active');
+    }
+</script>
+
+</body>
+</html>
